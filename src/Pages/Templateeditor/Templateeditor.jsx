@@ -26,13 +26,25 @@ function Templateeditor(props) {
   };
   const border = "1px solid grey";
   for (let index = 0; index < totalColumns; index++) {
+    const findItemIndex = imgctx.editedImage.findIndex((current) => current.index == index);
+    console.log(findItemIndex, imgctx.editedImage[findItemIndex]);
+    let bgUrl = "";
+    // const backgroundImage=findItem?imgctx.editedImage[findItem].imageUrl:"";
+    if (findItemIndex != -1) {
+      bgUrl = `url(${imgctx.editedImage[findItemIndex].imgUrl})`
+      console.log(bgUrl);
+    }
+    else {
+      bgUrl = "none"
+    }
+
     newArray.push(
       <div
         key={index}
         className={`cols  d-flex justify-content-center align-items-center fw-bolder p-5`}
         style={{
-          border: !urlOfArray[index] ? border : "none",
-          backgroundImage: `url(${urlOfArray[index]})`,
+          border: findItemIndex == -1 ? border : "none",
+          backgroundImage: bgUrl,
           backgroundSize:
             "100% 100%" /* Cover will ensure the image covers the entire div */,
           backgroundPosition: "center" /* Center the background image */,
@@ -40,7 +52,7 @@ function Templateeditor(props) {
         }}
         onClick={() => getCroppImageHandler(index)}
       >
-        {!urlOfArray[index] && "+"}
+        {findItemIndex==-1 && "+"}
       </div>
     );
   }
