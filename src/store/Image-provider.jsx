@@ -10,10 +10,12 @@ function Imageprovider(props) {
   };
   const [imgState, setImgState] = useState(initialData);
 
-  const addToEditedImageHandler = (imgurl) => {
+  const addToEditedImageHandler = (index, imgUrl) => {
     const obj = {
-      imageUrl: imgurl,
+      index,
+      imgUrl,
     };
+    // console.log(obj);
     const updatedEditedImage = [...imgState.editedImage];
     updatedEditedImage.push(obj);
     setImgState((prevImgState) => {

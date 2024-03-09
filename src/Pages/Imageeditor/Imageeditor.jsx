@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import AvatarEditor from "react-avatar-editor";
 import { FaArrowRotateRight } from "react-icons/fa6";
 import { FaArrowRotateLeft } from "react-icons/fa6";
@@ -8,7 +8,7 @@ import Slider from "@mui/material/Slider";
 import CardMedia from "@mui/material/CardMedia";
 import Card from "@mui/material/Card";
 import imageContext from "../../store/Image-context";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 const imageEditor = () => {
   const [image, setImage] = useState(null);
   const [editedImage, setEditedImage] = useState(null);
@@ -17,7 +17,10 @@ const imageEditor = () => {
   const editorRef = useRef();
   const imgctx = useContext(imageContext);
   const navigate = useNavigate();
+  const location = useLocation()
   // Function to handle file input change
+  useEffect(()=>{
+  },[])
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setImage(URL.createObjectURL(file));
@@ -52,11 +55,12 @@ const imageEditor = () => {
   // Function to get edited image
   const handleSaveImage = () => {
     if (editorRef.current) {
-      console.log(editorRef.current);
+      // console.log(editorRef.current);
       const canvas = editorRef.current.getImage();
       console.log(canvas);
       setEditedImage(canvas.toDataURL()); // Convert canvas to data URL
-      imgctx.addToEditedImage(canvas.toDataURL());
+      // console.log(location.state.index,canvas.toDataURL())
+      imgctx.addToEditedImage(location.state.index,canvas.toDataURL());
       navigate("/temeditor");
     }
   };

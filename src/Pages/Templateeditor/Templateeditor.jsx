@@ -14,7 +14,7 @@ function Templateeditor(props) {
 
   const totalColumns = imgctx.rowColState.totalColumns;
   const perLineCols = imgctx.rowColState.cols;
-
+  console.log(imgctx.editedImage);
   const urlOfArray = imgctx.editedImage.map((item) => {
     return item.imageUrl;
   });
@@ -22,16 +22,15 @@ function Templateeditor(props) {
   let index = 0;
   const getCroppImageHandler = (index) => {
     console.log(index);
-    navigate("/imgeditor");
+    navigate("/imgeditor", { state: { index } });
   };
-const border="1px solid grey"
+  const border = "1px solid grey";
   for (let index = 0; index < totalColumns; index++) {
     newArray.push(
       <div
         key={index}
         className={`cols  d-flex justify-content-center align-items-center fw-bolder p-5`}
         style={{
-          
           border: !urlOfArray[index] ? border : "none",
           backgroundImage: `url(${urlOfArray[index]})`,
           backgroundSize:
@@ -41,7 +40,7 @@ const border="1px solid grey"
         }}
         onClick={() => getCroppImageHandler(index)}
       >
-       {!urlOfArray[index] && "+"} 
+        {!urlOfArray[index] && "+"}
       </div>
     );
   }
