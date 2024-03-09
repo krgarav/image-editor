@@ -25,14 +25,23 @@ function Templateeditor(props) {
     navigate("/imgeditor", { state: { index } });
   };
   const border = "1px solid grey";
+  const fixedArr = new Array(totalColumns);
+  imgctx.editedImage.forEach((item) => {
+    const index = item.index;
+    const url = item.imgUrl;
+
+    fixedArr[index] = url;
+  });
+  console.log(fixedArr);
+  console.log(urlOfArray)
   for (let index = 0; index < totalColumns; index++) {
     newArray.push(
       <div
         key={index}
         className={`cols  d-flex justify-content-center align-items-center fw-bolder p-5`}
         style={{
-          border: !urlOfArray[index] ? border : "none",
-          backgroundImage: `url(${urlOfArray[index]})`,
+          border: !fixedArr[index] ? border : "none",
+          backgroundImage: `url(${fixedArr[index]})`,
           backgroundSize:
             "100% 100%" /* Cover will ensure the image covers the entire div */,
           backgroundPosition: "center" /* Center the background image */,
@@ -40,11 +49,13 @@ function Templateeditor(props) {
         }}
         onClick={() => getCroppImageHandler(index)}
       >
-        {!urlOfArray[index] && "+"}
+        {!fixedArr[index] && "+"}
       </div>
     );
   }
 
+  // console.log(newArray);
+  // console.log(mappedArray);
   const handleDownload = () => {
     // if (mergedImage) {
     //   // Create an anchor element
