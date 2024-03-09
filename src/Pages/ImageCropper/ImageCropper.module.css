@@ -4,17 +4,23 @@
 }
 .main_container {
   margin-top: 20dvh;
+  display: flex;
+  justify-content: center;
 }
 .box {
   border: 1px solid black;
   padding: 20px;
   margin: 30px;
   display: flex;
-
+  min-height: 70dvh;
+  min-width: 80dvw;
+  box-shadow: 0 0 10px 0.1px ;
+  border-radius: 5px;
+  /* justify-content: center; */
 }
-.section1{
-    border: 1px solid black;
-    width: 30%;
+.section1 {
+  border: 1px solid black;
+  width: 30%;
 }
 .avatar_container {
   display: flex;
@@ -46,4 +52,31 @@
 .btn_container {
   display: flex;
   justify-content: space-around;
+}
+
+.media-container {
+  position: relative;
+  margin: 10px;
+  border-radius: 5px;
+  border: 2px solid rgb(140, 40, 4);
+}
+
+.download-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000; /* Adjust color as needed */
+  opacity: 0; /* Hide icon by default */
+  font-size: 3rem;
+}
+
+.media-container:hover {
+  opacity: 0.5;
+  /* filter: blur(2px); */
+  border: 2px solid black;
+}
+
+.media-container:hover .download-icon {
+  opacity: 1;
 }

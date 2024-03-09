@@ -21,7 +21,6 @@ function Templateeditor(props) {
   let newArray = [];
   let index = 0;
   const getCroppImageHandler = (index) => {
-    console.log(index);
     navigate("/imgeditor");
   };
 
@@ -42,14 +41,6 @@ function Templateeditor(props) {
   }
 
   const handleDownload = () => {
-    // if (mergedImage) {
-    //   // Create an anchor element
-    //   const link = document.createElement("a");
-    //   link.href = mergedImage;
-    //   link.download = "merged_image.png";
-    //   // Simulate click on the anchor element to trigger download
-    //   link.click();
-    // }
     const collageElement = document.querySelector("#collage");
     html2canvas(collageElement).then((canvas) => {
       const link = document.createElement("a");

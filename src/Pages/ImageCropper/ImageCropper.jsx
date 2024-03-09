@@ -9,34 +9,136 @@ import CardMedia from "@mui/material/CardMedia";
 import Card from "@mui/material/Card";
 import imageContext from "../../store/Image-context";
 import { useNavigate } from "react-router-dom";
+import { BsDownload } from "react-icons/bs";
+import pica from "pica";
+
 const ImageCropper = () => {
-  const [image, setImage] = useState(null);  
+  const [image, setImage] = useState(null);
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
   const editorRef = useRef();
   const imgctx = useContext(imageContext);
+  const [hovered, setHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
   const navigate = useNavigate();
   // Function to handle file input change
 
   const croppedImageArray = imgctx.croppedImages.map((item, index) => {
-    console.log(item.imageUrl);
-    const handleDownload = (imageUrl) => {
-      const link = document.createElement("a");
-      link.href = imageUrl;
-      link.download = "image.jpg";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    // const handleDownload = (imageUrl) => {
+    //   const link = document.createElement("a");
+    //   link.href = imageUrl;
+    //   link.download = "image.jpg";
+    //   document.body.appendChild(link);
+    //   link.click();
+    //   document.body.removeChild(link);
+    // };
+    // const handleDownload = (imageUrl) => {
+    //   // Create a new image element
+    //   const img = new Image();
+
+    //   // Set the src attribute to the imageUrl
+    //   img.src = imageUrl;
+
+    //   // Once the image is loaded
+    //   img.onload = () => {
+    //     // Create a canvas element
+    //     const canvas = document.createElement("canvas");
+
+    //     // Set canvas size to 400x400 pixels
+    //     canvas.width = 1920;
+    //     canvas.height = 1080;
+
+    //     // Get the 2d drawing context of the canvas
+    //     const ctx = canvas.getContext("2d");
+
+    //     // Draw the image onto the canvas at 0,0 with width and height of 400
+    //     ctx.drawImage(img, 0, 0, 1920, 1080);
+
+    //     // Convert the canvas content to a data URL
+    //     const dataURL = canvas.toDataURL("image/jpeg");
+
+    //     // Create a link element to trigger the download
+    //     const link = document.createElement("a");
+    //     link.href = dataURL;
+    //     link.download = "image.jpg";
+
+    //     // Append the link to the document body and trigger a click event
+    //     document.body.appendChild(link);
+    //     link.click();
+
+    //     // Clean up by removing the link from the document body
+    //     document.body.removeChild(link);
+    //   };
+    // };
+
+    const handleDownload = async (imageUrl) => {
+      // Create a new image element
+      const img = new Image();
+
+      // Set the src attribute to the imageUrl
+      img.src = imageUrl;
+
+      // Once the image is loaded
+      img.onload = async () => {
+        // Create a canvas element
+        const canvas = document.createElement("canvas");
+
+        // Set canvas size to 400x400 pixels
+        canvas.width = 600;
+        canvas.height = 600;
+
+        // Get the 2d drawing context of the canvas
+        const ctx = canvas.getContext("2d");
+
+        // Use pica to resize the image
+        const resizedImage = await pica().resize(img, canvas, { quality: 3 });
+
+        // Draw the resized image onto the canvas
+        ctx.drawImage(resizedImage, 0, 0);
+
+        // Convert the canvas content to a data URL
+        const dataURL = canvas.toDataURL("image/jpeg");
+
+        // Create a link element to trigger the download
+        const link = document.createElement("a");
+        link.href = dataURL;
+        link.download = "image.jpg";
+
+        // Append the link to the document body and trigger a click event
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up by removing the link from the document body
+        document.body.removeChild(link);
+      };
     };
+
     return (
-      <CardMedia
+      <div
         key={index}
-        sx={{ height: 140 }}
-        className={classes.media}
-        image={item.imageUrl}
-        title="Image Title"
-        onClick={() => handleDownload(item.imageUrl)}
-      />
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className={classes["media-container"]}
+      >
+        {hovered && (
+          <BsDownload
+            className={classes["download-icon"]}
+            onClick={() => handleDownload(item.imageUrl)}
+          />
+        )}
+        <CardMedia
+          sx={{ height: 140 }}
+          image={item.imageUrl}
+          title="Image Title"
+        />
+      </div>
     );
   });
   const handleFileChange = (event) => {
@@ -58,7 +160,7 @@ const ImageCropper = () => {
   const handleSaveImage = () => {
     if (editorRef.current) {
       const canvas = editorRef.current.getImage();
-      
+
       imgctx.addToCroppedImages(canvas.toDataURL());
     }
   };
@@ -101,6 +203,7 @@ const ImageCropper = () => {
               />
             </Card>
           )}
+          <br />
           {image && (
             <div className={classes.btn_container}>
               <Button variant="contained" onClick={rotateLeftHandler}>
