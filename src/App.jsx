@@ -10,7 +10,7 @@ function App() {
     <div>
       <DrawerAppBar />
       <Routes>
-        <Route path="/" element={<DrawerAppBar />} />
+        <Route path="/" element={<Homepage />} />
         <Route path="/Image Cropper" element={<ImageCropper />} />
         <Route path="Image Merger" element={<Homepage />} />
         <Route path="/merge" element={<Homepage />} />
