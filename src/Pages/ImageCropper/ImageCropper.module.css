@@ -3,18 +3,18 @@
   padding: 0;
 }
 .main_container {
-  margin-top: 20dvh;
+  margin-top: 15dvh;
   display: flex;
   justify-content: center;
 }
 .box {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding: 20px;
   margin: 30px;
   display: flex;
   min-height: 70dvh;
   min-width: 80dvw;
-  box-shadow: 0 0 10px 0.1px ;
+  box-shadow: 0 0 10px 0.1px  ;
   border-radius: 5px;
   /* justify-content: center; */
 }

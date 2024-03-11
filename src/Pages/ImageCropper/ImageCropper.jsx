@@ -185,9 +185,9 @@ const ImageCropper = () => {
   return (
     <div className={classes.main_container}>
       <div className={classes.box}>
-        <div className={classes.section1}>
+        {croppedImageArray.length>0&&<div className={classes.section1}>
           <Card>{croppedImageArray}</Card>
-        </div>
+        </div>}
         <div className={classes.avatar_container}>
           {image && (
             <Card>
