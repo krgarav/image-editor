@@ -121,23 +121,26 @@ const ImageCropper = () => {
     };
 
     return (
-      <div
-        key={index}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className={classes["media-container"]}
-      >
-        {hovered && (
-          <BsDownload
-            className={classes["download-icon"]}
-            onClick={() => handleDownload(item.imageUrl)}
+      <div className="container">
+        {" "}
+        <div
+          key={index}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          // className={classes["media-container"]}
+        >
+          {hovered && (
+            <BsDownload
+              className={classes["download-icon"]}
+              onClick={() => handleDownload(item.imageUrl)}
+            />
+          )}
+          <CardMedia
+            sx={{ height: 140 }}
+            image={item.imageUrl}
+            title="Image Title"
           />
-        )}
-        <CardMedia
-          sx={{ height: 140 }}
-          image={item.imageUrl}
-          title="Image Title"
-        />
+        </div>
       </div>
     );
   });
