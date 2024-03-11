@@ -3,24 +3,31 @@
   padding: 0;
 }
 .main_container {
-  margin-top: 20dvh;
+  margin-top: 15dvh;
   display: flex;
   justify-content: center;
 }
 .box {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding: 20px;
   margin: 30px;
   display: flex;
   min-height: 70dvh;
   min-width: 80dvw;
-  box-shadow: 0 0 10px 0.1px ;
+  box-shadow: 0 0 10px 0.1px;
   border-radius: 5px;
-  /* justify-content: center; */
+  justify-content: center;
 }
 .section1 {
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  border-radius: 5px;
+  box-shadow: 0 0 10px #ccc;
   width: 30%;
+  
+}
+.dropbox{
+  width: 100%;
+  
 }
 .avatar_container {
   display: flex;
@@ -29,9 +36,9 @@
   border: 4px dashed #ccc;
   margin: 20px;
   padding: 20px;
-  /* margin-left: 30%; */
   text-align: center;
-  width: 70%;
+  min-width: 70%;
+  /* align-self: center; */
 }
 
 .uploader {
@@ -61,22 +68,55 @@
   border: 2px solid rgb(140, 40, 4);
 }
 
-.download-icon {
+.download-icon,
+.delete-icon {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #000; /* Adjust color as needed */
-  opacity: 0; /* Hide icon by default */
-  font-size: 3rem;
+  top: 40px;
+  font-size: 2.5rem;
+  cursor: pointer;
+  opacity: 0; /* Hide icons by default */
+  z-index: 2;
+  background-color: antiquewhite;
+  border-radius: 50%;
+  padding: 5px;
+  box-shadow: 0 0px 10px 10px;
 }
 
-.media-container:hover {
-  opacity: 0.5;
-  /* filter: blur(2px); */
-  border: 2px solid black;
+.download-icon {
+  left: 10%;
+  color: rgb(66, 138, 247);
 }
 
-.media-container:hover .download-icon {
-  opacity: 1;
+.delete-icon {
+  left: 70%;
+  color: rgb(189, 60, 60);
+ 
+}
+.media-container:hover .download-icon,
+.media-container:hover .delete-icon {
+  opacity: 1; /* Show icons on hover */
+}
+
+.icon-wrapper {
+  position: relative;
+}
+
+.div-dimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  filter: blur(2px);
+  z-index: 2;
+
+}
+.media-container:hover .div-dimmer{
+opacity: 1;
+}
+.btn-group{
+  display: flex;
+  justify-content: space-between;
 }

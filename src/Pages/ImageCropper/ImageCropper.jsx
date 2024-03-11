@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, Fragment } from "react";
 import AvatarEditor from "react-avatar-editor";
 import { FaArrowRotateRight } from "react-icons/fa6";
 import { FaArrowRotateLeft } from "react-icons/fa6";
@@ -11,6 +11,8 @@ import imageContext from "../../store/Image-context";
 import { useNavigate } from "react-router-dom";
 import { BsDownload } from "react-icons/bs";
 import pica from "pica";
+import { MdDelete } from "react-icons/md";
+import DrawerAppBar from "../../components/Appbar/Appbar";
 
 const ImageCropper = () => {
   const [image, setImage] = useState(null);
@@ -120,20 +122,28 @@ const ImageCropper = () => {
       };
     };
 
+    const handleDelete = (index) => {
+      imgctx.removeFromCroppedImage(index);
+    };
     return (
-      <div className="container">
-        {" "}
-        <div
-          key={index}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          // className={classes["media-container"]}
-        >
-          {hovered && (
+
+      
+
+      <div
+        key={index}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className={classes["media-container"]}
+      >
+        {hovered && <div className={classes["div-dimmer"]}></div>}
+        {hovered && (
+          <div className={classes["icon-wrapper"]}>
+
             <BsDownload
               className={classes["download-icon"]}
               onClick={() => handleDownload(item.imageUrl)}
             />
+
           )}
           <CardMedia
             sx={{ height: 140 }}
@@ -141,6 +151,22 @@ const ImageCropper = () => {
             title="Image Title"
           />
         </div>
+
+            <MdDelete
+              className={classes["delete-icon"]}
+              onClick={() => handleDelete(index)}
+            />
+          </div>
+        )}
+
+        {/* <img src={item.imageUrl} width="400px" height="400px" style={{zIndex:1}}  /> */}
+        <CardMedia
+          style={{ backgroundSize: "cover", zIndex: "1" }}
+          sx={{ height: 140 }}
+          image={item.imageUrl}
+          title="Image Title"
+        />
+
       </div>
     );
   });
@@ -185,107 +211,142 @@ const ImageCropper = () => {
       }
     });
   };
+  const handleChangeImage = () => {
+    setImage(null);
+    setScale(1);
+    setRotate(0);
+  };
   return (
-    <div className={classes.main_container}>
-      <div className={classes.box}>
-        <div className={classes.section1}>
-          <Card>{croppedImageArray}</Card>
-        </div>
-        <div className={classes.avatar_container}>
-          {image && (
-            <Card>
-              <AvatarEditor
-                image={image}
-                width={800}
-                height={500}
-                scale={scale}
-                rotate={rotate}
-                onScaleChange={handleScaleChange}
-                onRotateChange={handleRotateChange}
-                ref={editorRef}
-              />
-            </Card>
-          )}
-          <br />
-          {image && (
-            <div className={classes.btn_container}>
-              <Button variant="contained" onClick={rotateLeftHandler}>
-                Rotate 90&deg; left <FaArrowRotateLeft />
-              </Button>
-              <Button variant="contained" onClick={rotateRightHandler}>
-                Rotate 90&deg; right <FaArrowRotateRight />
-              </Button>
+    <Fragment>
+      <DrawerAppBar activeRoute="Image Cropper"/>
+      <div className={classes.main_container}>
+        <div className={classes.box}>
+          {croppedImageArray.length > 0 && (
+            <div className={classes.section1}>
+              <Card> {croppedImageArray}</Card>
             </div>
           )}
-
-          {/* File input to select image */}
-
-          {!image && (
-            <div>
-              <h1>
-                Drop your image here <br /> <strong>or</strong>
-              </h1>
-              <label htmlFor="file-upload">
-                <h1 className={classes.uploader}>
-                  Click here to Upload an Image
-                </h1>
-              </label>
-              <input
-                id="file-upload"
-                type="file"
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-              />
-            </div>
-          )}
-
-          {/* Scale and rotate controls */}
-          <div>
+          <div className={classes.avatar_container}>
             {image && (
-              <div>
-                <label>Scale:</label>
-                <Slider
-                  defaultValue={1}
-                  aria-label="Default"
-                  valueLabelDisplay="auto"
-                  value={scale}
-                  step={0.01}
-                  min={1}
-                  max={6}
-                  onChange={handleScaleChange}
+              <Card>
+                <AvatarEditor
+                  image={image}
+                  width={600}
+                  height={300}
+                  scale={scale}
+                  rotate={rotate}
+                  onScaleChange={handleScaleChange}
+                  onRotateChange={handleRotateChange}
+                  ref={editorRef}
+                  showGrid={false}
+                  crossOrigin="anonymous"
+                  style={{ position: "relative" }}
                 />
+                {/* Grid overlay */}
+                {/* <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    border: "1px solid rgba(0, 0, 0, 0.5)", // Border color of the grid lines
+                    boxSizing: "border-box",
+                    backgroundSize: "20px 20px", // Adjust size of the grid squares
+                    backgroundImage:
+                      "linear-gradient(to right, rgba(0, 0, 0, 0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1px, transparent 1px)", // Create the grid pattern
+                  }}
+                ></div>
+              */}
+              </Card>
+            )}
+            <br />
+            {image && (
+              <div className={classes.btn_container}>
+                <Button variant="contained" onClick={rotateLeftHandler}>
+                  Rotate 90&deg; left <FaArrowRotateLeft />
+                </Button>
+                <Button variant="contained" onClick={rotateRightHandler}>
+                  Rotate 90&deg; right <FaArrowRotateRight />
+                </Button>
+              </div>
+            )}
 
-                <label>Rotate:</label>
-                <Slider
-                  defaultValue={0}
-                  aria-label="default"
-                  valueLabelDisplay="auto"
-                  value={rotate}
-                  step={1}
-                  min={0}
-                  max={360}
-                  onChange={handleRotateChange}
+            {/* File input to select image */}
+
+            {!image && (
+              <div className={classes.dropbox}>
+                <h1>
+                  Drop your image here <br /> <strong>or</strong>
+                </h1>
+                <label htmlFor="file-upload">
+                  <h1 className={classes.uploader}>
+                    Click here to Upload an Image
+                  </h1>
+                </label>
+                <input
+                  id="file-upload"
+                  type="file"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
                 />
               </div>
             )}
-          </div>
 
-          {/* Buttons to get and download edited image */}
-          {image && (
+            {/* Scale and rotate controls */}
             <div>
-              <Button
-                onClick={handleSaveImage}
-                variant="contained"
-                color="success"
-              >
-                Save Edited Image
-              </Button>
+              {image && (
+                <div>
+                  <label>Scale:</label>
+                  <Slider
+                    defaultValue={1}
+                    aria-label="Default"
+                    valueLabelDisplay="auto"
+                    value={scale}
+                    step={0.01}
+                    min={1}
+                    max={6}
+                    onChange={handleScaleChange}
+                  />
+
+                  <label>Rotate:</label>
+                  <Slider
+                    defaultValue={0}
+                    aria-label="default"
+                    valueLabelDisplay="auto"
+                    value={rotate}
+                    step={1}
+                    min={0}
+                    max={360}
+                    onChange={handleRotateChange}
+                  />
+                </div>
+              )}
             </div>
-          )}
 
-          {/* Display the edited image */}
+            {/* Buttons to get and download edited image */}
+            {image && (
+              <div className={classes["btn-group"]}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleChangeImage}
+                >
+                  Add another image
+                </Button>
+                <Button
+                  onClick={handleSaveImage}
+                  variant="contained"
+                  color="success"
+                >
+                  Save Edited Image
+                </Button>
+              </div>
+            )}
 
-          {/* {editedImage && (
+            {/* Display the edited image */}
+
+            {/* {editedImage && (
         <Card sx={{ maxWidth: 345 }}>
           <CardMedia
             sx={{ height: 140 }}
@@ -295,9 +356,10 @@ const ImageCropper = () => {
           />
         </Card>
       )} */}
+          </div>
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
 

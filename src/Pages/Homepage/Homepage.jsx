@@ -1,9 +1,12 @@
-import React, { useContext, useRef } from "react";
+import React, { Fragment, useContext, useRef } from "react";
 import { useNavigate } from "react-router";
 import imageContext from "../../store/Image-context";
 import homepagecss from "./Homepage.module.css";
+
 import tempcss from "../Templateeditor/templateeditor.module.css"
 import { toast } from "react-toastify";
+import DrawerAppBar from "../../components/Appbar/Appbar";
+
 
 function Homepage() {
   const navigate = useNavigate();
@@ -19,6 +22,7 @@ function Homepage() {
     const cols = colRef.current.value;
     const row = rowRef.current.value;
     console.log(); //{row: 1, cols: 3, totalColumns: 9}
+
     if( cols>6){
       toast.error("columns per line field should be 6 or less  ")
       return;
@@ -27,11 +31,14 @@ function Homepage() {
       toast.error("row field should be 6 or less  ")
       return;
     }
+
+
     sendRowandColDataHandler({ row: 1, cols: cols, totalColumns: row * cols });
   };
   const dogImg =
     "https://img.huffingtonpost.com/asset/5ab4d4ac2000007d06eb2c56.jpeg?cache=sih0jwle4e&ops=1910_1000";
   return (
+
     // <div
     //   className={`container  border overflow-y-scroll ${homepagecss.containerMain} mt-5`}
     //   style={{ width: "100vw", height: "100vh"  }}
@@ -173,13 +180,28 @@ function Homepage() {
         <div className="row ">
           <div className="col-8 text-center border  fw-bolder py-2 ">
             Select template from predefined templates
+
+    <Fragment>
+      <DrawerAppBar activeRoute="Image Merger"/>
+      <div
+        className={`container  border overflow-y-scroll ${homepagecss.containerMain} `}
+        style={{ width: "100vw", height: "100vh" }}
+      >
+        <div className="row my-2 mx-5">
+          <div className="col-8 text-center border  fw-bolder py-2">
+            select template from predefined template
+
           </div>
           <div className="col text-center  fw-bolder py-2 mx-5 ">
             {/* create Your custom template */}
           </div>
         </div>
         <div className="row">
+
           <div className="col-8 m-2">
+
+          <div className="col-8 m-2 ">
+
             <div className="col m-5">
               <div
                 style={{
@@ -291,7 +313,11 @@ function Homepage() {
                 ></input>
                 <input
                   placeholder="total row"
+
                   className="my-2 mx-1"
+
+                  className="my-2"
+
                   type="number"
                   ref={rowRef}
                 ></input>
@@ -306,7 +332,7 @@ function Homepage() {
           </div>
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 }
 
