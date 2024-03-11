@@ -34,8 +34,7 @@ function Templateeditor(props) {
 
     fixedArr[index] = url;
   });
-  console.log(fixedArr);
-  console.log(urlOfArray);
+ 
   for (let index = 0; index < totalColumns; index++) {
     const findItemIndex = imgctx.editedImage.findIndex(
       (current) => current.index == index
