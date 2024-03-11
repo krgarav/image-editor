@@ -2,11 +2,18 @@
   margin: 0;
   padding: 0;
 }
+.image_container {
+  display: flex;
+  justify-content: center;
+}
 .main_container {
   height: 70dvh;
-  /* background-color: black; */
   padding: 10px;
+  margin: 20px;
   margin-top: 10dvh;
+  box-shadow: 0 0 10px #ccc;
+  border-radius: 10px;
+  max-width: 80dvw;
 }
 .avatar_container {
   display: flex;
@@ -16,7 +23,7 @@
   margin: 20px;
   padding: 20px;
   text-align: center;
-  /* margin-top: 20dvh; */
+  min-height: 90%;
 }
 
 .uploader {

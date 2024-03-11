@@ -19,11 +19,11 @@
   justify-content: center;
 }
 .section1 {
-  /* border: 1px solid black; */
   border-radius: 5px;
   box-shadow: 0 0 10px #ccc;
   width: 30%;
-  
+  max-height: 70dvh;
+  overflow-y: auto;
 }
 .dropbox{
   width: 100%;
