@@ -1,0 +1,7 @@
+.columnContainer{
+    overflow-y: scroll;
+}
+
+.columnContainer::-webkit-scrollbar {
+    display: none;
+}

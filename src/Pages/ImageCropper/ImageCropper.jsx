@@ -126,6 +126,9 @@ const ImageCropper = () => {
       imgctx.removeFromCroppedImage(index);
     };
     return (
+
+      
+
       <div
         key={index}
         onMouseEnter={handleMouseEnter}
@@ -135,10 +138,20 @@ const ImageCropper = () => {
         {hovered && <div className={classes["div-dimmer"]}></div>}
         {hovered && (
           <div className={classes["icon-wrapper"]}>
+
             <BsDownload
               className={classes["download-icon"]}
               onClick={() => handleDownload(item.imageUrl)}
             />
+
+          )}
+          <CardMedia
+            sx={{ height: 140 }}
+            image={item.imageUrl}
+            title="Image Title"
+          />
+        </div>
+
             <MdDelete
               className={classes["delete-icon"]}
               onClick={() => handleDelete(index)}
@@ -153,6 +166,7 @@ const ImageCropper = () => {
           image={item.imageUrl}
           title="Image Title"
         />
+
       </div>
     );
   });

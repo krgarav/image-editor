@@ -2,7 +2,12 @@ import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import imageContext from "../../store/Image-context";
 import html2canvas from "html2canvas";
+
+import tempcss from "./templateeditor.module.css";
+import { toast } from "react-toastify";
+
 import DrawerAppBar from "../../components/Appbar/Appbar";
+
 function Templateeditor(props) {
   const croppedimageArray = [
     "https://picsum.photos/id/237/200/300",
@@ -52,7 +57,7 @@ function Templateeditor(props) {
     newArray.push(
       <div
         key={index}
-        className={`cols  d-flex justify-content-center align-items-center fw-bolder p-5`}
+        className={`cols  d-flex justify-content-center align-items-center fw-bolder p-4`}
         style={{
           border: findItemIndex == -1 ? border : "none",
           backgroundImage: bgUrl,
@@ -63,12 +68,30 @@ function Templateeditor(props) {
         }}
         onClick={() => getCroppImageHandler(index)}
       >
-        {findItemIndex == -1 && "+"}
+
+        {findItemIndex == -1 && "+ "}
+
+
       </div>
     );
   }
 
   const handleDownload = () => {
+
+    // if (mergedImage) {
+    //   // Create an anchor element
+    //   const link = document.createElement("a");
+    //   link.href = mergedImage;
+    //   link.download = "merged_image.png";
+    //   // Simulate click on the anchor element to trigger download
+    //   link.click();
+    // }
+  if(imgctx.editedImage.length<totalColumns){
+    toast.error("please upload image to each column else choose another template")
+    return
+  }
+
+
     const collageElement = document.querySelector("#collage");
     html2canvas(collageElement).then((canvas) => {
       const link = document.createElement("a");
@@ -79,6 +102,39 @@ function Templateeditor(props) {
     });
   };
   return (
+
+    // <div
+    //   className="container border  d-flex justify-content-center align-items-center flex-column"
+    //   style={{ width: "100vw", height: "100vh" }}
+    // >
+    //   <div
+    //     className={`row row-cols-${perLineCols} m-3 border`}
+    //     id="collage"
+    //     // style={{ Width: "600px", height: "400px" }}
+    //   >
+    //     {newArray}
+    //   </div>
+    //   <div className="row text-center">
+    //     <div className="btn btn-warning my-5" onClick={handleDownload}>
+    //       download merge image
+    //     </div>
+    //   </div>
+    // </div>
+    <div style={{ height: "100vh", width: "100vw" }}>
+      <div style={{ height: "5vh" }}></div>
+      <div
+        className={`container mt-5 border  ${tempcss.columnContainer} d-flex justify-content-center align-items-center`}
+        style={{ height: "70vh" }}
+      >
+        <div className={`row row-cols-${perLineCols} m-1 my-3`} id="collage">
+          
+          {newArray}
+        </div>
+      </div>
+      <div className="container text-center">
+        <div className="btn btn-outline-warning my-2 fw-bold" onClick={handleDownload}>
+          Download Merge Image
+
     <Fragment>
       <DrawerAppBar activeRoute="Image Merger" />
 
@@ -97,6 +153,7 @@ function Templateeditor(props) {
           <div className="btn btn-warning my-5" onClick={handleDownload}>
             download merge image
           </div>
+
         </div>
       </div>
     </Fragment>
