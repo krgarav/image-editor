@@ -33,53 +33,6 @@ const ImageCropper = () => {
   // Function to handle file input change
 
   const croppedImageArray = imgctx.croppedImages.map((item, index) => {
-    // const handleDownload = (imageUrl) => {
-    //   const link = document.createElement("a");
-    //   link.href = imageUrl;
-    //   link.download = "image.jpg";
-    //   document.body.appendChild(link);
-    //   link.click();
-    //   document.body.removeChild(link);
-    // };
-    // const handleDownload = (imageUrl) => {
-    //   // Create a new image element
-    //   const img = new Image();
-
-    //   // Set the src attribute to the imageUrl
-    //   img.src = imageUrl;
-
-    //   // Once the image is loaded
-    //   img.onload = () => {
-    //     // Create a canvas element
-    //     const canvas = document.createElement("canvas");
-
-    //     // Set canvas size to 400x400 pixels
-    //     canvas.width = 1920;
-    //     canvas.height = 1080;
-
-    //     // Get the 2d drawing context of the canvas
-    //     const ctx = canvas.getContext("2d");
-
-    //     // Draw the image onto the canvas at 0,0 with width and height of 400
-    //     ctx.drawImage(img, 0, 0, 1920, 1080);
-
-    //     // Convert the canvas content to a data URL
-    //     const dataURL = canvas.toDataURL("image/jpeg");
-
-    //     // Create a link element to trigger the download
-    //     const link = document.createElement("a");
-    //     link.href = dataURL;
-    //     link.download = "image.jpg";
-
-    //     // Append the link to the document body and trigger a click event
-    //     document.body.appendChild(link);
-    //     link.click();
-
-    //     // Clean up by removing the link from the document body
-    //     document.body.removeChild(link);
-    //   };
-    // };
-
     const handleDownload = async (imageUrl) => {
       // Create a new image element
       const img = new Image();
@@ -202,9 +155,23 @@ const ImageCropper = () => {
     setScale(1);
     setRotate(0);
   };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImage(URL.createObjectURL(file));
+    } else {
+      alert("Please drop an image file.");
+    }
+  };
+
+  // Function to handle the drag over event
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
   return (
     <Fragment>
-      <DrawerAppBar activeRoute="Image Cropper"/>
+      <DrawerAppBar activeRoute="Image Cropper" />
       <div className={classes.main_container}>
         <div className={classes.box}>
           {croppedImageArray.length > 0 && (
@@ -212,7 +179,11 @@ const ImageCropper = () => {
               <Card> {croppedImageArray}</Card>
             </div>
           )}
-          <div className={classes.avatar_container}>
+          <div
+            className={classes.avatar_container}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+          >
             {image && (
               <Card>
                 <AvatarEditor
@@ -228,22 +199,6 @@ const ImageCropper = () => {
                   crossOrigin="anonymous"
                   style={{ position: "relative" }}
                 />
-                {/* Grid overlay */}
-                {/* <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    border: "1px solid rgba(0, 0, 0, 0.5)", // Border color of the grid lines
-                    boxSizing: "border-box",
-                    backgroundSize: "20px 20px", // Adjust size of the grid squares
-                    backgroundImage:
-                      "linear-gradient(to right, rgba(0, 0, 0, 0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1px, transparent 1px)", // Create the grid pattern
-                  }}
-                ></div>
-              */}
               </Card>
             )}
             <br />
@@ -329,19 +284,6 @@ const ImageCropper = () => {
                 </Button>
               </div>
             )}
-
-            {/* Display the edited image */}
-
-            {/* {editedImage && (
-        <Card sx={{ maxWidth: 345 }}>
-          <CardMedia
-            sx={{ height: 140 }}
-            className={classes.media}
-            image={editedImage}
-            title="Image Title"
-          />
-        </Card>
-      )} */}
           </div>
         </div>
       </div>

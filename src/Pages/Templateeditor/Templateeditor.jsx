@@ -2,6 +2,8 @@ import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import imageContext from "../../store/Image-context";
 import html2canvas from "html2canvas";
+import tempcss from "./templateeditor.module.css";
+import { toast } from "react-toastify";
 import DrawerAppBar from "../../components/Appbar/Appbar";
 function Templateeditor(props) {
   const croppedimageArray = [
@@ -33,8 +35,7 @@ function Templateeditor(props) {
 
     fixedArr[index] = url;
   });
-  console.log(fixedArr);
-  console.log(urlOfArray);
+
   for (let index = 0; index < totalColumns; index++) {
     const findItemIndex = imgctx.editedImage.findIndex(
       (current) => current.index == index
@@ -60,15 +61,32 @@ function Templateeditor(props) {
             "100% 100%" /* Cover will ensure the image covers the entire div */,
           backgroundPosition: "center" /* Center the background image */,
           backgroundRepeat: "no-repeat" /* Prevent the image from repeating */,
+          // padding:"180px"
         }}
         onClick={() => getCroppImageHandler(index)}
       >
-        {findItemIndex == -1 && "+"}
+        {findItemIndex == -1 && "+ "}
       </div>
     );
   }
 
+  // console.log(newArray);
+  // console.log(mappedArray);
   const handleDownload = () => {
+    // if (mergedImage) {
+    //   // Create an anchor element
+    //   const link = document.createElement("a");
+    //   link.href = mergedImage;
+    //   link.download = "merged_image.png";
+    //   // Simulate click on the anchor element to trigger download
+    //   link.click();
+    // }
+    if (imgctx.editedImage.length < totalColumns) {
+      toast.error(
+        "please upload image to each column else choose another template"
+      );
+      return;
+    }
     const collageElement = document.querySelector("#collage");
     html2canvas(collageElement).then((canvas) => {
       const link = document.createElement("a");
@@ -81,21 +99,22 @@ function Templateeditor(props) {
   return (
     <Fragment>
       <DrawerAppBar activeRoute="Image Merger" />
-
-      <div
-        className="container border  d-flex justify-content-center align-items-center flex-column"
-        style={{ width: "100vw", height: "100vh" }}
-      >
+      <div style={{ height: "100vh", width: "100vw" }}>
+        <div style={{ height: "5vh" }}></div>
         <div
-          className={`row row-cols-${perLineCols} m-3 border`}
-          id="collage"
-          style={{ Width: "600px", height: "400px" }}
+          className={`container mt-5 border  ${tempcss.columnContainer} d-flex justify-content-center align-items-center`}
+          style={{ height: "70vh" }}
         >
-          {newArray}
+          <div className={`row row-cols-${perLineCols} m-1 my-3`} id="collage">
+            {newArray}
+          </div>
         </div>
-        <div className="row text-center">
-          <div className="btn btn-warning my-5" onClick={handleDownload}>
-            download merge image
+        <div className="container text-center">
+          <div
+            className="btn btn-outline-warning my-2 fw-bold"
+            onClick={handleDownload}
+          >
+            Download Merge Image
           </div>
         </div>
       </div>
