@@ -40,6 +40,17 @@ function Imageprovider(props) {
       return { ...item, rowColState: updatedObj };
     });
   };
+  const removeFromCroppedImageHandler = (enteredIndex) => {
+    const croppedImage = [...imgState.croppedImages];
+
+    const filteredCroppedImage = croppedImage.filter((item, index) => {
+      return index !== enteredIndex;
+    });
+    console.log(filteredCroppedImage);
+    setImgState((item) => {
+      return { ...item, croppedImages: filteredCroppedImage };
+    });
+  };
   const imgContext = {
     editedImage: imgState.editedImage,
     mergedImages: imgState.mergedImages,
@@ -49,6 +60,7 @@ function Imageprovider(props) {
     addToMergedImages: addToMergedImagesHandler,
     addToCroppedImages: addToCroppedImagesHandler,
     setRowColState: setRowColStateHandler,
+    removeFromCroppedImage: removeFromCroppedImageHandler,
   };
   return (
     <Imagecontext.Provider value={imgContext}>

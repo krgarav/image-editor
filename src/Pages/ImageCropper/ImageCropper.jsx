@@ -11,6 +11,7 @@ import imageContext from "../../store/Image-context";
 import { useNavigate } from "react-router-dom";
 import { BsDownload } from "react-icons/bs";
 import pica from "pica";
+import { MdDelete } from "react-icons/md";
 
 const ImageCropper = () => {
   const [image, setImage] = useState(null);
@@ -120,6 +121,9 @@ const ImageCropper = () => {
       };
     };
 
+    const handleDelete = (index) => {
+      imgctx.removeFromCroppedImage(index);
+    };
     return (
       <div
         key={index}
@@ -127,13 +131,23 @@ const ImageCropper = () => {
         onMouseLeave={handleMouseLeave}
         className={classes["media-container"]}
       >
+        {hovered && <div className={classes["div-dimmer"]}></div>}
         {hovered && (
-          <BsDownload
-            className={classes["download-icon"]}
-            onClick={() => handleDownload(item.imageUrl)}
-          />
+          <div className={classes["icon-wrapper"]}>
+            <BsDownload
+              className={classes["download-icon"]}
+              onClick={() => handleDownload(item.imageUrl)}
+            />
+            <MdDelete
+              className={classes["delete-icon"]}
+              onClick={() => handleDelete(index)}
+            />
+          </div>
         )}
+
+        {/* <img src={item.imageUrl} width="400px" height="400px" style={{zIndex:1}}  /> */}
         <CardMedia
+          style={{ backgroundSize: "cover", zIndex: "1" }}
           sx={{ height: 140 }}
           image={item.imageUrl}
           title="Image Title"
@@ -182,25 +196,51 @@ const ImageCropper = () => {
       }
     });
   };
+  const handleChangeImage = () => {
+    setImage(null);
+    setScale(1);
+    setRotate(0);
+  };
   return (
     <div className={classes.main_container}>
       <div className={classes.box}>
-        {croppedImageArray.length>0&&<div className={classes.section1}>
-          <Card>{croppedImageArray}</Card>
-        </div>}
+        {croppedImageArray.length > 0 && (
+          <div className={classes.section1}>
+            <Card> {croppedImageArray}</Card>
+          </div>
+        )}
         <div className={classes.avatar_container}>
           {image && (
             <Card>
               <AvatarEditor
                 image={image}
-                width={800}
-                height={500}
+                width={600}
+                height={300}
                 scale={scale}
                 rotate={rotate}
                 onScaleChange={handleScaleChange}
                 onRotateChange={handleRotateChange}
                 ref={editorRef}
+                showGrid={false}
+                crossOrigin="anonymous"
+                style={{ position: "relative" }}
               />
+                {/* Grid overlay */}
+                {/* <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    border: "1px solid rgba(0, 0, 0, 0.5)", // Border color of the grid lines
+                    boxSizing: "border-box",
+                    backgroundSize: "20px 20px", // Adjust size of the grid squares
+                    backgroundImage:
+                      "linear-gradient(to right, rgba(0, 0, 0, 0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1px, transparent 1px)", // Create the grid pattern
+                  }}
+                ></div>
+              */}
             </Card>
           )}
           <br />
@@ -218,7 +258,7 @@ const ImageCropper = () => {
           {/* File input to select image */}
 
           {!image && (
-            <div>
+            <div className={classes.dropbox}>
               <h1>
                 Drop your image here <br /> <strong>or</strong>
               </h1>
@@ -269,7 +309,14 @@ const ImageCropper = () => {
 
           {/* Buttons to get and download edited image */}
           {image && (
-            <div>
+            <div className={classes["btn-group"]}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleChangeImage}
+              >
+                Add another image
+              </Button>
               <Button
                 onClick={handleSaveImage}
                 variant="contained"

@@ -8,7 +8,8 @@ const imageContext = React.createContext({
   setRowColState: () => {},
   addToEditedImage: () => {},
   addToMergedImages: () => {},
-  addToCroppedImages: ()=>{}
+  addToCroppedImages: ()=>{},
+  removeFromCroppedImage:()=>{}
 });
 
 export default imageContext;
