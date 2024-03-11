@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import imageContext from "../../store/Image-context";
 import html2canvas from "html2canvas";
+import DrawerAppBar from "../../components/Appbar/Appbar";
 function Templateeditor(props) {
   const croppedimageArray = [
     "https://picsum.photos/id/237/200/300",
@@ -33,18 +34,19 @@ function Templateeditor(props) {
     fixedArr[index] = url;
   });
   console.log(fixedArr);
-  console.log(urlOfArray)
+  console.log(urlOfArray);
   for (let index = 0; index < totalColumns; index++) {
-    const findItemIndex = imgctx.editedImage.findIndex((current) => current.index == index);
+    const findItemIndex = imgctx.editedImage.findIndex(
+      (current) => current.index == index
+    );
     console.log(findItemIndex, imgctx.editedImage[findItemIndex]);
     let bgUrl = "";
     // const backgroundImage=findItem?imgctx.editedImage[findItem].imageUrl:"";
     if (findItemIndex != -1) {
-      bgUrl = `url(${imgctx.editedImage[findItemIndex].imgUrl})`
+      bgUrl = `url(${imgctx.editedImage[findItemIndex].imgUrl})`;
       console.log(bgUrl);
-    }
-    else {
-      bgUrl = "none"
+    } else {
+      bgUrl = "none";
     }
 
     newArray.push(
@@ -61,22 +63,12 @@ function Templateeditor(props) {
         }}
         onClick={() => getCroppImageHandler(index)}
       >
-        {findItemIndex==-1 && "+"}
+        {findItemIndex == -1 && "+"}
       </div>
     );
   }
 
-  // console.log(newArray);
-  // console.log(mappedArray);
   const handleDownload = () => {
-    // if (mergedImage) {
-    //   // Create an anchor element
-    //   const link = document.createElement("a");
-    //   link.href = mergedImage;
-    //   link.download = "merged_image.png";
-    //   // Simulate click on the anchor element to trigger download
-    //   link.click();
-    // }
     const collageElement = document.querySelector("#collage");
     html2canvas(collageElement).then((canvas) => {
       const link = document.createElement("a");
@@ -87,23 +79,27 @@ function Templateeditor(props) {
     });
   };
   return (
-    <div
-      className="container border  d-flex justify-content-center align-items-center flex-column"
-      style={{ width: "100vw", height: "100vh" }}
-    >
+    <Fragment>
+      <DrawerAppBar activeRoute="Image Merger" />
+
       <div
-        className={`row row-cols-${perLineCols} m-3 border`}
-        id="collage"
-        style={{ Width: "600px", height: "400px" }}
+        className="container border  d-flex justify-content-center align-items-center flex-column"
+        style={{ width: "100vw", height: "100vh" }}
       >
-        {newArray}
-      </div>
-      <div className="row text-center">
-        <div className="btn btn-warning my-5" onClick={handleDownload}>
-          download merge image
+        <div
+          className={`row row-cols-${perLineCols} m-3 border`}
+          id="collage"
+          style={{ Width: "600px", height: "400px" }}
+        >
+          {newArray}
+        </div>
+        <div className="row text-center">
+          <div className="btn btn-warning my-5" onClick={handleDownload}>
+            download merge image
+          </div>
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 }
 
