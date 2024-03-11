@@ -1,7 +1,13 @@
 .columnContainer{
     overflow-y: scroll;
+    box-shadow: 2px 5px 7px rgb(74, 152, 32);
+    /* border-radius: 10px ; */
 }
 
 .columnContainer::-webkit-scrollbar {
     display: none;
+}
+.columnDiv{
+    min-width: 180px;
+    min-height:150px
 }

@@ -27,6 +27,14 @@ function Homepage() {
       toast.error("row field should be 6 or less  ");
       return;
     }
+    if (cols == 0) {
+      toast.error("columns per line fields should be bigger than 0  ");
+      return;
+    }
+    if (row == 0) {
+      toast.error("row field should be bigger than 0  ");
+      return;
+    }
     sendRowandColDataHandler({ row: 1, cols: cols, totalColumns: row * cols });
   };
   const dogImg =
@@ -34,30 +42,30 @@ function Homepage() {
   return (
     <Fragment>
       <DrawerAppBar activeRoute="Image Merger" />
-      <div style={{ height: "100vh", width: "100vw" }}>
-        <div style={{ height: "8vh" }}></div>
+      <div style={{ height: "100vh", width: "100vw" }} >
+        <div style={{ height: "12vh" }}></div>
         <div
-          className={`container border ${tempcss.columnContainer}`}
-          style={{ height: "90vh" }}
+          className={`container border ${tempcss.columnContainer} mt-1 shadow`}
+          style={{ height: "auto" }}
         >
           <div className="row ">
-            <div className="col-8 text-center border  fw-bolder py-2 ">
+            <div className="col-12 col-sm-8 text-center border  fw-bolder py-2 bg-info text-white">
               Select template from predefined templates
             </div>
             <div className="col text-center  fw-bolder py-2 mx-5 ">
-              {/* create Your custom template */}
+              
             </div>
           </div>
-          <div className="row">
-            <div className="col-8 m-2">
-              <div className="col m-5">
+          <div className="row text-center">
+            <div className="col-12 col-md-8 m-2">
+              <div className="col m-5 text-center">
                 <div
                   style={{
                     backgroundImage: `url(${dogImg})`,
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "100% 100%",
                   }}
-                  className={`${homepagecss.templateDiv} row row-cols-2 fw-bolder`}
+                  className={`${homepagecss.templateDiv} row row-cols-2 fw-bolder `}
                   onClick={() =>
                     sendRowandColDataHandler({
                       row: 1,
@@ -80,7 +88,7 @@ function Homepage() {
                   </div>
                 </div>
               </div>
-              <hr></hr>
+              <hr className="featurette-divider"></hr>
               <div className="col m-5 fw-bolder">
                 <div
                   style={{
@@ -126,7 +134,7 @@ function Homepage() {
                   </div>
                 </div>
               </div>
-              <hr></hr>
+              <hr className="featurette-divider fw-b"></hr>
               <div className="col m-5 fw-bolder">
                 <div
                   style={{
@@ -155,7 +163,7 @@ function Homepage() {
                 </div>
               </div>
             </div>
-            <div className="col   m-2 d-flex justify-content-center align-items-center flex-column">
+            <div className="col   m-2 d-flex  align-items-center flex-column">
               <div className="badge rounded-circle bg-info m-2">
                 <h3>OR</h3>
               </div>
@@ -166,7 +174,7 @@ function Homepage() {
                 <div className="p-3 text-center">
                   {" "}
                   <input
-                    placeholder="enter cols per line"
+                    placeholder="enter columns per line"
                     className="my-2"
                     type="number"
                     ref={colRef}

@@ -6,6 +6,7 @@ import tempcss from "./templateeditor.module.css";
 import { toast } from "react-toastify";
 import DrawerAppBar from "../../components/Appbar/Appbar";
 import ImageCollage from "../../components/ImageCollage/ImageCollage";
+import uploadsvg from "../../../public/upload-svgrepo-com.png"
 function Templateeditor(props) {
   const croppedimageArray = [
     "https://picsum.photos/id/237/200/300",
@@ -55,7 +56,7 @@ function Templateeditor(props) {
     newArray.push(
       <div
         key={index}
-        className={`cols  d-flex justify-content-center align-items-center fw-bolder p-5`}
+        className={`cols  d-flex justify-content-center align-items-center fw-bolder ${tempcss.columnDiv}`}
         style={{
           border: findItemIndex == -1 ? border : "none",
           backgroundImage: bgUrl,
@@ -63,11 +64,13 @@ function Templateeditor(props) {
             "100% 100%" /* Cover will ensure the image covers the entire div */,
           backgroundPosition: "center" /* Center the background image */,
           backgroundRepeat: "no-repeat" /* Prevent the image from repeating */,
+          // minWidth:"180px"
           // padding:"180px"
         }}
         onClick={() => getCroppImageHandler(index)}
       >
-        {findItemIndex == -1 && "+ "}
+        <div className={tempcss.uploadIcon}>{findItemIndex == -1 && <img src={uploadsvg} width="30px" height="30px"></img>}</div>
+
       </div>
     );
   }
@@ -96,10 +99,10 @@ function Templateeditor(props) {
       <div style={{ height: "100vh", width: "100vw" }}>
         <div style={{ height: "5vh" }}></div>
         <div
-          className={`container mt-5 border  ${tempcss.columnContainer} d-flex justify-content-center align-items-center`}
+          className={`container mt-5 border  ${tempcss.columnContainer} d-flex justify-content-center`}
           style={{ height: "70vh" }}
         >
-          <div className={`row row-cols-${perLineCols} m-1 my-3`} id="collage">
+          <div className={`row row-cols-${perLineCols}`} id="collage">
             {newArray}
           </div>
         </div>
