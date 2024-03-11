@@ -69,12 +69,30 @@ const imageEditor = () => {
       }
     });
   };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImage(URL.createObjectURL(file));
+    } else {
+      alert("Please drop an image file.");
+    }
+  };
+
+  // Function to handle the drag over event
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
   return (
     <Fragment>
       <DrawerAppBar activeRoute="Image Merger" />
       <div className={classes.image_container}>
         <div className={classes.main_container}>
-          <div className={classes.avatar_container}>
+          <div
+            className={classes.avatar_container}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+          >
             {image && (
               <Card>
                 <AvatarEditor
@@ -153,32 +171,17 @@ const imageEditor = () => {
             </div>
 
             {/* Buttons to get and download edited image */}
-            <div>
-              <Button
-                onClick={handleSaveImage}
-                variant="contained"
-                color="success"
-              >
-                Save Edited Image
-              </Button>
-
-              {/* <button onClick={handleDownloadImage} disabled={!editedImage}>
-          Download Edited Image
-        </button> */}
-            </div>
-
-            {/* Display the edited image */}
-
-            {/* {editedImage && (
-        <Card sx={{ maxWidth: 345 }}>
-          <CardMedia
-            sx={{ height: 140 }}
-            className={classes.media}
-            image={editedImage}
-            title="Image Title"
-          />
-        </Card>
-      )} */}
+            {image && (
+              <div>
+                <Button
+                  onClick={handleSaveImage}
+                  variant="contained"
+                  color="success"
+                >
+                  Save Edited Image
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

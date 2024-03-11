@@ -5,6 +5,7 @@ import html2canvas from "html2canvas";
 import tempcss from "./templateeditor.module.css";
 import { toast } from "react-toastify";
 import DrawerAppBar from "../../components/Appbar/Appbar";
+import ImageCollage from "../../components/ImageCollage/ImageCollage";
 function Templateeditor(props) {
   const croppedimageArray = [
     "https://picsum.photos/id/237/200/300",
@@ -12,6 +13,7 @@ function Templateeditor(props) {
   ];
   const [mergedImage, setMergedImage] = useState(null);
   const [colsDiv, setColsDiv] = useState([]);
+  const [state, setState] = useState(false);
   const navigate = useNavigate();
   const imgctx = useContext(imageContext);
 
@@ -70,31 +72,23 @@ function Templateeditor(props) {
     );
   }
 
-  // console.log(newArray);
-  // console.log(mappedArray);
   const handleDownload = () => {
-    // if (mergedImage) {
-    //   // Create an anchor element
-    //   const link = document.createElement("a");
-    //   link.href = mergedImage;
-    //   link.download = "merged_image.png";
-    //   // Simulate click on the anchor element to trigger download
-    //   link.click();
-    // }
     if (imgctx.editedImage.length < totalColumns) {
       toast.error(
         "please upload image to each column else choose another template"
       );
       return;
+    } else {
+      const collageElement = document.querySelector("#collage");
+      html2canvas(collageElement).then((canvas) => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL();
+        link.download = "collage.png";
+        document.body.appendChild(link);
+        link.click();
+      });
+      // setState(true);
     }
-    const collageElement = document.querySelector("#collage");
-    html2canvas(collageElement).then((canvas) => {
-      const link = document.createElement("a");
-      link.href = canvas.toDataURL();
-      link.download = "collage.png";
-      document.body.appendChild(link);
-      link.click();
-    });
   };
   return (
     <Fragment>
@@ -116,6 +110,13 @@ function Templateeditor(props) {
           >
             Download Merge Image
           </div>
+          {/* {state && (
+            <ImageCollage
+              imageUrls={imgctx.editedImage}
+              rows={perLineCols}
+              columns={totalColumns}
+            />
+          )} */}
         </div>
       </div>
     </Fragment>

@@ -7,7 +7,7 @@
   justify-content: center;
 }
 .main_container {
-  height: 70dvh;
+  min-height: 70dvh;
   padding: 10px;
   margin: 20px;
   margin-top: 10dvh;
