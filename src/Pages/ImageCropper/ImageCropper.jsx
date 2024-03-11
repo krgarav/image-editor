@@ -144,8 +144,6 @@ const ImageCropper = () => {
             />
           </div>
         )}
-
-        {/* <img src={item.imageUrl} width="400px" height="400px" style={{zIndex:1}}  /> */}
         <CardMedia
           style={{ backgroundSize: "cover", zIndex: "1" }}
           sx={{ height: 140 }}
@@ -201,6 +199,17 @@ const ImageCropper = () => {
     setScale(1);
     setRotate(0);
   };
+  // Function to handle the drop event
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    setImage(URL.createObjectURL(file));
+  };
+
+  // Function to handle the drag over event
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
   return (
     <div className={classes.main_container}>
       <div className={classes.box}>
@@ -225,22 +234,6 @@ const ImageCropper = () => {
                 crossOrigin="anonymous"
                 style={{ position: "relative" }}
               />
-                {/* Grid overlay */}
-                {/* <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    border: "1px solid rgba(0, 0, 0, 0.5)", // Border color of the grid lines
-                    boxSizing: "border-box",
-                    backgroundSize: "20px 20px", // Adjust size of the grid squares
-                    backgroundImage:
-                      "linear-gradient(to right, rgba(0, 0, 0, 0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1px, transparent 1px)", // Create the grid pattern
-                  }}
-                ></div>
-              */}
             </Card>
           )}
           <br />
@@ -262,7 +255,11 @@ const ImageCropper = () => {
               <h1>
                 Drop your image here <br /> <strong>or</strong>
               </h1>
-              <label htmlFor="file-upload">
+              <label
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                htmlFor="file-upload"
+              >
                 <h1 className={classes.uploader}>
                   Click here to Upload an Image
                 </h1>
