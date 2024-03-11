@@ -8,7 +8,7 @@ import DrawerAppBar from "./components/Appbar/Appbar";
 function App() {
   return (
     <div>
-      <DrawerAppBar />
+      
       <Routes>
         <Route path="/Image Cropper" element={<ImageCropper />} />
         <Route path="Image Merger" element={<Homepage />} />

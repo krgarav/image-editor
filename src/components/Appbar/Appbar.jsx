@@ -79,7 +79,10 @@ function DrawerAppBar(props) {
               <Button key={item} sx={{ color: "#fff" }}>
                 <NavLink
                   to={`/${item}`}
-                  style={{ textDecoration: "none", color: "inherit" }}
+                  style={{
+                    textDecoration: "none",
+                    color: activeRoute === item ? "#ff0000" : "#fff",
+                  }}
                 >
                   {item}
                 </NavLink>
