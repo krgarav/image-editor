@@ -20,6 +20,7 @@ const navItems = ["Image Cropper", "Image Merger"];
 
 function DrawerAppBar(props) {
   const { window } = props;
+  const { activeRoute } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -112,10 +113,7 @@ function DrawerAppBar(props) {
 }
 
 DrawerAppBar.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
+  activeRoute: PropTypes.string.isRequired,
   window: PropTypes.func,
 };
 
