@@ -10,14 +10,11 @@ function App() {
     <div>
       <DrawerAppBar />
       <Routes>
-        <Route path="/" element={<Homepage />} />
         <Route path="/Image Cropper" element={<ImageCropper />} />
         <Route path="Image Merger" element={<Homepage />} />
-        <Route path="/merge" element={<Homepage />} />
-        <Route path="/crop" element={<ImageCropper />} />
         <Route path="/imgeditor" element={<Imageeditor />} />
         <Route path="/temeditor" element={<Templateeditor />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/Image Cropper" />} />
       </Routes>
     </div>
   );
