@@ -28,11 +28,11 @@ function Homepage() {
       return;
     }
     if (cols == 0) {
-      toast.error("columns per line fields should be bigger than 0  ");
+      toast.error("columns per line fields should be bigger than 0  columns ");
       return;
     }
     if (row == 0) {
-      toast.error("row field should be bigger than 0  ");
+      toast.error("row field should be bigger than 0 row ");
       return;
     }
     sendRowandColDataHandler({ row: 1, cols: cols, totalColumns: row * cols });
@@ -42,7 +42,7 @@ function Homepage() {
   return (
     <Fragment>
       <DrawerAppBar activeRoute="Image Merger" />
-      <div style={{ height: "100vh", width: "100vw" }} >
+      <div style={{ height: "100vh", width: "100vw",overflowX:"hidden" }} >
         <div style={{ height: "12vh" }}></div>
         <div
           className={`container border ${tempcss.columnContainer} mt-1 shadow`}
@@ -134,7 +134,7 @@ function Homepage() {
                   </div>
                 </div>
               </div>
-              <hr className="featurette-divider fw-b"></hr>
+              <hr className="featurette-divider fw-bold"></hr>
               <div className="col m-5 fw-bolder">
                 <div
                   style={{

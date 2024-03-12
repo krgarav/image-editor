@@ -6,7 +6,7 @@ import tempcss from "./templateeditor.module.css";
 import { toast } from "react-toastify";
 import DrawerAppBar from "../../components/Appbar/Appbar";
 import ImageCollage from "../../components/ImageCollage/ImageCollage";
-import uploadsvg from "../../../public/upload-svgrepo-com.png"
+import uploadsvg from "../../../public/upload-svgrepo-com.png";
 function Templateeditor(props) {
   const croppedimageArray = [
     "https://picsum.photos/id/237/200/300",
@@ -20,7 +20,13 @@ function Templateeditor(props) {
 
   const totalColumns = imgctx.rowColState.totalColumns;
   const perLineCols = imgctx.rowColState.cols;
-  console.log(imgctx.editedImage);
+  const row=(totalColumns/perLineCols)
+  console.log(row)
+  let styles="";
+  if(row===1){
+
+  }
+  
   const urlOfArray = imgctx.editedImage.map((item) => {
     return item.imageUrl;
   });
@@ -64,13 +70,23 @@ function Templateeditor(props) {
             "100% 100%" /* Cover will ensure the image covers the entire div */,
           backgroundPosition: "center" /* Center the background image */,
           backgroundRepeat: "no-repeat" /* Prevent the image from repeating */,
-          // minWidth:"180px"
+          
           // padding:"180px"
         }}
         onClick={() => getCroppImageHandler(index)}
       >
-        <div className={tempcss.uploadIcon}>{findItemIndex == -1 && <img src={uploadsvg} width="30px" height="30px"></img>}</div>
-
+        <div className={tempcss.uploadIcon}>
+          {findItemIndex == -1 ?(
+            <div>
+              <img src={uploadsvg} width="30px" height="30px"></img>upload
+              <h5></h5>
+            </div>
+          ):(<div>
+            <div style={{width:"30px",height:"30px"}}  width="30px" height="30px" ></div>
+            <h5></h5>
+          </div>)}
+        
+        </div>
       </div>
     );
   }
@@ -98,20 +114,29 @@ function Templateeditor(props) {
       <DrawerAppBar activeRoute="Image Merger" />
       <div style={{ height: "100vh", width: "100vw" }}>
         <div style={{ height: "5vh" }}></div>
+
         <div
-          className={`container mt-5 border  ${tempcss.columnContainer} d-flex justify-content-center`}
+          className={`container mt-5 border  ${tempcss.columnContainer} d-flex `}
           style={{ height: "70vh" }}
         >
-          <div className={`row row-cols-${perLineCols}`} id="collage">
-            {newArray}
+          {/* <div className="py-2 px-1 my-2"> */}
+          <div style={{ margin: "20px" }}>
+            {" "}
+            <div
+              className={`row row-cols-${perLineCols}  ${tempcss.rowStyle} d-flex justify-content-center`}
+              id="collage"
+              // style={{ minHeight: "595px", minWidth: "842px" }}
+            >
+              {newArray}
+            </div>
           </div>
         </div>
         <div className="container text-center">
           <div
-            className="btn btn-outline-warning my-2 fw-bold"
+            className="btn btn-outline-warning my-3 fw-bold"
             onClick={handleDownload}
           >
-            Download Merge Image
+            Download Merged Image
           </div>
           {/* {state && (
             <ImageCollage
