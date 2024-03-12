@@ -5,34 +5,25 @@ import html2canvas from "html2canvas";
 import tempcss from "./templateeditor.module.css";
 import { toast } from "react-toastify";
 import DrawerAppBar from "../../components/Appbar/Appbar";
-import ImageCollage from "../../components/ImageCollage/ImageCollage";
 import uploadsvg from "../../../public/upload-svgrepo-com.png";
 import jsPDF from "jspdf";
 
 function Templateeditor(props) {
-  const croppedimageArray = [
-    "https://picsum.photos/id/237/200/300",
-    "https://picsum.photos/seed/picsum/200/300",
-  ];
-  const [mergedImage, setMergedImage] = useState(null);
-  const [colsDiv, setColsDiv] = useState([]);
-  const [state, setState] = useState(false);
   const navigate = useNavigate();
   const imgctx = useContext(imageContext);
 
   const totalColumns = imgctx.rowColState.totalColumns;
   const perLineCols = imgctx.rowColState.cols;
   const row = totalColumns / perLineCols;
-  console.log(row);
-  let styles = "";
-  if (row === 1) {
-  }
 
-  const urlOfArray = imgctx.editedImage.map((item) => {
-    return item.imageUrl;
-  });
+  useEffect(() => {
+    if (!totalColumns || !perLineCols) {
+      navigate("/Image Merger", { replace: true });
+    }
+  }, []);
+
   let newArray = [];
-  let index = 0;
+
   const getCroppImageHandler = (index) => {
     console.log(index);
     navigate("/imgeditor", { state: { index } });
@@ -140,14 +131,14 @@ function Templateeditor(props) {
         <div style={{ height: "5vh" }}></div>
 
         <div
-          className={`container mt-5 border  ${tempcss.columnContainer} d-flex `}
+          className={`container mt-5 border  ${tempcss.columnContainer} d-flex  justify-content-center`}
           style={{ height: "70vh" }}
         >
           {/* <div className="py-2 px-1 my-2"> */}
           <div style={{ margin: "20px" }}>
             {" "}
             <div
-              className={`row row-cols-${perLineCols}  ${tempcss.rowStyle} d-flex justify-content-center`}
+              className={`row row-cols-${perLineCols}  ${tempcss.rowStyle} d-flex`}
               id="collage"
               // style={{ minHeight: "595px", minWidth: "842px" }}
             >

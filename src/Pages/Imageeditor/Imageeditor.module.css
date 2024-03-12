@@ -10,10 +10,11 @@
   min-height: 70dvh;
   padding: 10px;
   margin: 20px;
-  margin-top: 10dvh;
+  margin-top: 12dvh;
   box-shadow: 0 0 10px #ccc;
   border-radius: 10px;
-  max-width: 80dvw;
+  min-width: 80dvw;
+  min-height: 80dvh;
 }
 .avatar_container {
   display: flex;
@@ -24,6 +25,7 @@
   padding: 20px;
   text-align: center;
   min-height: 90%;
+  /* min-width:70% */
 }
 
 .uploader {
@@ -44,4 +46,5 @@
 .btn_container {
   display: flex;
   justify-content: space-around;
+  margin: 20px;
 }

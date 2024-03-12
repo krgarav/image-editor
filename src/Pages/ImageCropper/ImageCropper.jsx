@@ -186,6 +186,7 @@ const ImageCropper = () => {
           >
             {image && (
               <Card>
+                <h1>image</h1>
                 <AvatarEditor
                   image={image}
                   width={600}
@@ -292,3 +293,5 @@ const ImageCropper = () => {
 };
 
 export default ImageCropper;
+
+/* Component created by Kumar Gaurav*/
