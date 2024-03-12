@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import DrawerAppBar from "../../components/Appbar/Appbar";
 import ImageCollage from "../../components/ImageCollage/ImageCollage";
 import uploadsvg from "../../../public/upload-svgrepo-com.png";
-import jsPDF from 'jspdf';
+import jsPDF from "jspdf";
 
 function Templateeditor(props) {
   const croppedimageArray = [
@@ -114,16 +114,23 @@ function Templateeditor(props) {
     }
   };
   const handleDownloadPdf = () => {
-    const collageElement = document.querySelector("#collage");
-    html2canvas(collageElement).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
-      const imgWidth = 210; // A4 page width
-      const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate A4 page height proportionally
-      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-      console.log(pdf);
-      pdf.save("collage.pdf");
-    });
+    if (imgctx.editedImage.length < totalColumns) {
+      toast.error(
+        "please upload image to each column else choose another template"
+      );
+      return;
+    } else {
+      const collageElement = document.querySelector("#collage");
+      html2canvas(collageElement).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF();
+        const imgWidth = 210; // A4 page width
+        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate A4 page height proportionally
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+        console.log(pdf);
+        pdf.save("collage.pdf");
+      });
+    }
   };
 
   return (
