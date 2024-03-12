@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import DrawerAppBar from "../../components/Appbar/Appbar";
 import ImageCollage from "../../components/ImageCollage/ImageCollage";
 import uploadsvg from "../../../public/upload-svgrepo-com.png";
+import jsPDF from 'jspdf';
+
 function Templateeditor(props) {
   const croppedimageArray = [
     "https://picsum.photos/id/237/200/300",
@@ -20,13 +22,12 @@ function Templateeditor(props) {
 
   const totalColumns = imgctx.rowColState.totalColumns;
   const perLineCols = imgctx.rowColState.cols;
-  const row=(totalColumns/perLineCols)
-  console.log(row)
-  let styles="";
-  if(row===1){
-
+  const row = totalColumns / perLineCols;
+  console.log(row);
+  let styles = "";
+  if (row === 1) {
   }
-  
+
   const urlOfArray = imgctx.editedImage.map((item) => {
     return item.imageUrl;
   });
@@ -49,7 +50,6 @@ function Templateeditor(props) {
     const findItemIndex = imgctx.editedImage.findIndex(
       (current) => current.index == index
     );
-    console.log(findItemIndex, imgctx.editedImage[findItemIndex]);
     let bgUrl = "";
     // const backgroundImage=findItem?imgctx.editedImage[findItem].imageUrl:"";
     if (findItemIndex != -1) {
@@ -70,22 +70,27 @@ function Templateeditor(props) {
             "100% 100%" /* Cover will ensure the image covers the entire div */,
           backgroundPosition: "center" /* Center the background image */,
           backgroundRepeat: "no-repeat" /* Prevent the image from repeating */,
-          
+
           // padding:"180px"
         }}
         onClick={() => getCroppImageHandler(index)}
       >
         <div className={tempcss.uploadIcon}>
-          {findItemIndex == -1 ?(
+          {findItemIndex == -1 ? (
             <div>
               <img src={uploadsvg} width="30px" height="30px"></img>upload
               <h5></h5>
             </div>
-          ):(<div>
-            <div style={{width:"30px",height:"30px"}}  width="30px" height="30px" ></div>
-            <h5></h5>
-          </div>)}
-        
+          ) : (
+            <div>
+              <div
+                style={{ width: "30px", height: "30px" }}
+                width="30px"
+                height="30px"
+              ></div>
+              <h5></h5>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -106,9 +111,21 @@ function Templateeditor(props) {
         document.body.appendChild(link);
         link.click();
       });
-      // setState(true);
     }
   };
+  const handleDownloadPdf = () => {
+    const collageElement = document.querySelector("#collage");
+    html2canvas(collageElement).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF();
+      const imgWidth = 210; // A4 page width
+      const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate A4 page height proportionally
+      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+      console.log(pdf);
+      pdf.save("collage.pdf");
+    });
+  };
+
   return (
     <Fragment>
       <DrawerAppBar activeRoute="Image Merger" />
@@ -138,13 +155,12 @@ function Templateeditor(props) {
           >
             Download Merged Image
           </div>
-          {/* {state && (
-            <ImageCollage
-              imageUrls={imgctx.editedImage}
-              rows={perLineCols}
-              columns={totalColumns}
-            />
-          )} */}
+          <div
+            className="btn btn-outline-info my-3 mx-5 fw-bold"
+            onClick={handleDownloadPdf}
+          >
+            Download as Pdf
+          </div>
         </div>
       </div>
     </Fragment>
