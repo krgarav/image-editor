@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useContext,
-  useEffect,
-  Fragment,
-} from "react";
-import AvatarEditor from "react-avatar-editor";
+import React, { useState, useRef, useContext, Fragment } from "react";
 import { FaArrowRotateRight } from "react-icons/fa6";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 import classes from "./Imageeditor.module.css";
@@ -16,17 +9,16 @@ import imageContext from "../../store/Image-context";
 import { useLocation, useNavigate } from "react-router-dom";
 import DrawerAppBar from "../../components/Appbar/Appbar";
 import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 const imageEditor = () => {
   const [image, setImage] = useState(null);
-  const [editedImage, setEditedImage] = useState(null);
   const [scale, setScale] = useState(0);
   const [rotate, setRotate] = useState(0);
   const imgctx = useContext(imageContext);
   const navigate = useNavigate();
   const location = useLocation();
   const cropperRef = useRef();
-  // Function to handle file input change
-  useEffect(() => {}, []);
+
   const handleFileChange = (e) => {
     e.preventDefault();
     let files;
@@ -41,7 +33,7 @@ const imageEditor = () => {
     };
     reader.readAsDataURL(files[0]);
   };
-console.log(image)
+  console.log(image);
   // Function to handle scale change
   const handleScaleChange = (event) => {
     setScale(parseFloat(event.target.value));
@@ -55,9 +47,6 @@ console.log(image)
   // Function to get edited image
   const handleSaveImage = () => {
     if (typeof cropperRef.current?.cropper !== "undefined") {
-      setEditedImage(
-        cropperRef.current?.cropper.getCroppedCanvas().toDataURL()
-      );
       imgctx.addToEditedImage(
         location.state.index,
         cropperRef.current?.cropper.getCroppedCanvas().toDataURL()
@@ -84,7 +73,6 @@ console.log(image)
       alert("Please drop an image file.");
     }
   };
- 
 
   // Function to handle the drag over event
   const handleDragOver = (e) => {
@@ -101,9 +89,7 @@ console.log(image)
             onDragOver={handleDragOver}
           >
             {image && (
-              
               <Card style={{ display: "flex", justifyContent: "center" }}>
-                <h1>Img</h1>
                 <Cropper
                   ref={cropperRef}
                   style={{ height: 400, width: "80%" }}

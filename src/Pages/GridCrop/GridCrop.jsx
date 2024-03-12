@@ -14,6 +14,7 @@ import pica from "pica";
 import { MdDelete } from "react-icons/md";
 import DrawerAppBar from "../../components/Appbar/Appbar";
 import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
 const GridCrop = () => {
   const [image, setImage] = useState(null);
@@ -137,7 +138,6 @@ const GridCrop = () => {
       cropperRef.current.cropper.rotate(val);
       setRotate(parseFloat(val));
     }
-    // cropperRef.current.cropper.rotate(-1);
   };
 
   // Function to get edited image
@@ -200,8 +200,8 @@ const GridCrop = () => {
                   preview=".img-preview"
                   src={image}
                   viewMode={1}
-                  minCropBoxHeight={10}
-                  minCropBoxWidth={10}
+                  minCropBoxHeight={50}
+                  minCropBoxWidth={50}
                   background={false}
                   responsive={true}
                   autoCropArea={1}
