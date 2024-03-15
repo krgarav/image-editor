@@ -138,14 +138,36 @@ function Templateeditor(props) {
       return;
     } else {
       const collageElement = document.querySelector("#collage");
-      html2canvas(collageElement).then((canvas) => {
+      html2canvas(collageElement).then(async(canvas) => {
         const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF();
-        const imgWidth = 210; // A4 page width
-        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate A4 page height proportionally
-        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-        console.log(pdf);
-        pdf.save("collage.pdf");
+    const pdf = new jsPDF();
+    const imgWidth = 210; // A4 page width
+    const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate A4 page height proportionally
+    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+    // Generate PDF as a Blob
+    const pdfBlob = pdf.output("blob");
+
+    // Request permission to save file with suggested filename and PDF format
+    const opts = {
+        types: [
+            {
+                description: "PDF file",
+                accept: { "application/pdf": [".pdf"] },
+            },
+        ],
+        suggestedName: "collage",
+    };
+    const fileHandle = await window.showSaveFilePicker(opts);
+
+    // Create a new file writer
+    const writable = await fileHandle.createWritable();
+
+    // Write the Blob to the file with PDF MIME type
+    await writable.write(pdfBlob);
+
+    // Close the file
+    await writable.close();
       });
     }
   };
