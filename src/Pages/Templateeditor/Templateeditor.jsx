@@ -95,12 +95,38 @@ function Templateeditor(props) {
       return;
     } else {
       const collageElement = document.querySelector("#collage");
-      html2canvas(collageElement).then((canvas) => {
-        const link = document.createElement("a");
-        link.href = canvas.toDataURL();
-        link.download = "collage.png";
-        document.body.appendChild(link);
-        link.click();
+      html2canvas(collageElement).then(async (canvas) => {
+        // Convert canvas to data URL representing the image
+        const imgDataUrl = canvas.toDataURL("image/jpeg", 0.9); // JPEG format with quality
+
+        // Convert data URL to Blob
+        const response = await fetch(imgDataUrl);
+
+        const blob = await response.blob();
+
+        const opts = {
+          types: [
+            {
+              description: "JPEG Image",
+              accept: { "image/jpeg": [".jpg", ".jpeg"] },
+            },
+          ],
+          suggestedName: "merged image",
+        };
+
+        // Request permission to save file
+        const fileHandle = await window.showSaveFilePicker(opts);
+
+        // Create a new file writer
+        const writable = await fileHandle.createWritable();
+        const fileName = fileHandle.name.endsWith(".jpeg")
+          ? fileHandle.name
+          : `${fileHandle.name}.jpeg`;
+        // Write the Blob to the file
+        await writable.write(blob, { type: "image/jpeg" });
+
+        // Close the file
+        await writable.close();
       });
     }
   };
