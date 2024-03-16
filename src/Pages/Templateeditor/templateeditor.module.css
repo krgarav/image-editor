@@ -1,8 +1,6 @@
 .columnContainer {
   overflow-y: scroll;
   box-shadow: 2px 5px 7px rgb(74, 152, 32);
-  /* overflow-x: hidden; */
-  /* border-radius: 10px ; */
 }
 
 .columnContainer::-webkit-scrollbar {
@@ -14,29 +12,4 @@
     min-width: 500px;
    
   }
-  .columnDiv{
-    /* max-width:480px;
-    min-height: 250px; */
-  }
-/* .rowStyle {
-  min-height: 595px;
-  min-width: 842px;
-}
-.columnDiv {
-  min-width: 180px;
-  min-height: 150px;
-}
-@media (max-width: 1200px) {
-  .columnDiv {
-    min-width: 140px;
-  }
-  .rowStyle {
-    min-height: 495px;
-    min-width: 742px;
-  }
-}
-@media (max-width: 1000px) {
-  .columnDiv {
-    min-width: 80px;
-  }
-} */
+

@@ -1,7 +1,6 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import React, { Fragment, useContext, useEffect } from "react";
+import { useNavigate } from "react-router";
 import imageContext from "../../store/Image-context";
-import html2canvas from "html2canvas";
 import tempcss from "./templateeditor.module.css";
 import { toast } from "react-toastify";
 import DrawerAppBar from "../../components/Appbar/Appbar";
@@ -10,7 +9,7 @@ import jsPDF from "jspdf";
 import ArrayCalculation from "../../components/ArrayCalculation";
 import ImageMerger from "../../components/Imagemerger";
 
-function Templateeditor(props) {
+function Templateeditor() {
   const navigate = useNavigate();
   const imgctx = useContext(imageContext);
   const totalColumns = imgctx.rowColState.totalColumns;
@@ -90,13 +89,12 @@ function Templateeditor(props) {
       );
       return;
     } else {
-     
       const twoDimImgUrlArr = ArrayCalculation(
         imgctx.editedImage,
         perLineCols,
         totalRow
       );
-  
+
       const imgDataUrl = await ImageMerger(twoDimImgUrlArr);
       const response = await fetch(imgDataUrl);
       const blob = await response.blob();
@@ -109,77 +107,75 @@ function Templateeditor(props) {
         ],
         suggestedName: "merged image",
       };
-
-      // Request permission to save file
       const fileHandle = await window.showSaveFilePicker(opts);
-
-      // Create a new file writer
       const writable = await fileHandle.createWritable();
       await writable.write(blob, { type: "image/jpeg" });
       await writable.close();
-
-      // const collageElement = document.querySelector("#collage");
-      // html2canvas(collageElement).then(async (canvas) => {
-      //   // Convert canvas to data URL representing the image
-      //   const imgDataUrl = canvas.toDataURL("image/jpeg", 0.9); // JPEG format with quality
-
-      //   // Convert data URL to Blob
-      //   const response = await fetch(imgDataUrl);
-
-      //   const blob = await response.blob();
-
-      //   const opts = {
-      //     types: [
-      //       {
-      //         description: "JPEG Image",
-      //         accept: { "image/jpeg": [".jpg", ".jpeg"] },
-      //       },
-      //     ],
-      //     suggestedName: "merged image",
-      //   };
-
-      //   // Request permission to save file
-      //   const fileHandle = await window.showSaveFilePicker(opts);
-
-      //   // Create a new file writer
-      //   const writable = await fileHandle.createWritable();
-      //   await writable.write(blob, { type: "image/jpeg" });
-      //   await writable.close();
-      // });
     }
   };
 
-  const handleDownloadPdf = () => {
+  const handleDownloadPdf = async () => {
     if (imgctx.editedImage.length < totalColumns) {
       toast.error(
         "please upload image to each column else choose another template"
       );
       return;
     } else {
-      const collageElement = document.querySelector("#collage");
-      html2canvas(collageElement).then(async (canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF();
-        const imgWidth = 210; // A4 page width
-        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate A4 page height proportionally
-        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+      const twoDimImgUrlArr = ArrayCalculation(
+        imgctx.editedImage,
+        perLineCols,
+        totalRow
+      );
 
-        // Generate PDF as a Blob
-        const pdfBlob = pdf.output("blob");
-        const opts = {
-          types: [
-            {
-              description: "PDF file",
-              accept: { "application/pdf": [".pdf"] },
-            },
-          ],
-          suggestedName: "collage",
+      const imgDataUrl = await ImageMerger(twoDimImgUrlArr);
+
+      // Create an HTML image element
+      const img = new Image();
+
+      // Listen for the load event
+      const imgLoadPromise = new Promise((resolve) => {
+        img.onload = () => {
+          resolve();
         };
-        const fileHandle = await window.showSaveFilePicker(opts);
-        const writable = await fileHandle.createWritable();
-        await writable.write(pdfBlob);
-        await writable.close();
       });
+
+      // Set the src attribute to the data URL
+      img.src = imgDataUrl;
+
+      // Wait for the image to load
+      await imgLoadPromise;
+
+      // Once the image is loaded, get its width and height
+      const imgWidth = img.naturalWidth;
+      const imgHeight = img.naturalHeight;
+
+      // Calculate the PDF page size based on the image dimensions
+      const pageWidth = imgWidth + 20; // Add some padding
+      const pageHeight = imgHeight + 20; // Add some padding
+      const pdf = new jsPDF({
+        unit: "mm",
+        format: [pageWidth, pageHeight],
+      });
+
+      // Add the image to the PDF
+      pdf.addImage(imgDataUrl, "JPEG", 10, 10, imgWidth, imgHeight);
+
+      // Generate PDF as a Blob
+      const pdfBlob = pdf.output("blob");
+      const opts = {
+        types: [
+          {
+            description: "PDF file",
+            accept: { "application/pdf": [".pdf"] },
+          },
+        ],
+        suggestedName: "collage",
+      };
+      const fileHandle = await window.showSaveFilePicker(opts);
+      const writable = await fileHandle.createWritable();
+      await writable.write(pdfBlob);
+      await writable.close();
+      // });
     }
   };
   // console.log(row);
