@@ -95,11 +95,27 @@ function Templateeditor(props) {
       return;
     } else {
       const collageElement = document.querySelector("#collage");
-      html2canvas(collageElement).then((canvas) => {
+      html2canvas(collageElement).then(async(canvas) => {
+        // const link = document.createElement("a");
+        // link.href = canvas.toDataURL();
+        // link.download = "collage.png";
+        // Convert canvas to a data URL
+        const dataURL = canvas.toDataURL();
+
+        // Create an anchor element
         const link = document.createElement("a");
-        link.href = canvas.toDataURL();
-        link.download = "collage.png";
-        document.body.appendChild(link);
+        link.href = dataURL;
+        
+        const fileHandle = await window.showOpenFilePicker();
+    
+        // Get the file contents
+        const file = await fileHandle[0].getFile();
+        const fileContents = await file.text();
+        
+        // link.download = "collage.png"; // Set the default filename
+        const fileName = prompt("Enter the filename", "collage.png");
+        link.download = fileName ? fileName : "collage.png";
+        // document.body.appendChild(link);
         link.click();
       });
     }
