@@ -129,55 +129,61 @@ function Templateeditor() {
 
       const imgDataUrl = await ImageMerger(twoDimImgUrlArr);
 
-      // Create an HTML image element
       const img = new Image();
-
-      // Listen for the load event
-      const imgLoadPromise = new Promise((resolve) => {
-        img.onload = () => {
-          resolve();
-        };
-      });
-
-      // Set the src attribute to the data URL
       img.src = imgDataUrl;
 
-      // Wait for the image to load
-      await imgLoadPromise;
-
-      // Once the image is loaded, get its width and height
-      const imgWidth = img.naturalWidth;
-      const imgHeight = img.naturalHeight;
-
-      // Calculate the PDF page size based on the image dimensions
-      const pageWidth = imgWidth + 20; // Add some padding
-      const pageHeight = imgHeight + 20; // Add some padding
+      // Generate PDF as a Blob
       const pdf = new jsPDF({
         unit: "mm",
-        format: [pageWidth, pageHeight],
       });
-      // Add the image to the PDF
-      pdf.addImage(imgDataUrl, "JPEG", 10, 10, pageHeight, pageHeight);
+      // Create a new jsPDF instance
 
-      // Generate PDF as a Blob
-      const pdfBlob = pdf.output("blob");
-      const opts = {
-        types: [
-          {
-            description: "PDF file",
-            accept: { "application/pdf": [".pdf"] },
-          },
-        ],
-        suggestedName: "collage",
+      // Wait for the image to load
+      img.onload = async () => {
+        // Calculate the dimensions to fit the image on the page
+        const imgWidth = pdf.internal.pageSize.getWidth();
+        const imgHeight = img.height * (imgWidth / img.width);
+
+        // Add the image to the PDF
+        pdf.addImage(img, "JPEG", 0, 0, imgWidth, imgHeight);
+
+        // Generate the PDF as a Blob
+        const pdfBlob = pdf.output("blob");
+
+        // Specify options for saving the file
+        const opts = {
+          types: [
+            {
+              description: "PDF file",
+              accept: { "application/pdf": [".pdf"] },
+            },
+          ],
+          suggestedName: "collage",
+        };
+
+        try {
+          // Prompt the user to select a location to save the file
+          const fileHandle = await window.showSaveFilePicker(opts);
+
+          // Create a writable stream to the file
+          const writable = await fileHandle.createWritable();
+
+          // Write the PDF Blob to the file
+          await writable.write(pdfBlob);
+
+          // Close the file
+          await writable.close();
+        } catch (error) {
+          console.error("Error saving PDF:", error);
+        }
       };
-      const fileHandle = await window.showSaveFilePicker(opts);
-      const writable = await fileHandle.createWritable();
-      await writable.write(pdfBlob);
-      await writable.close();
-      // });
+
+      // Handle errors if the image fails to load
+      img.onerror = (error) => {
+        console.error("Error loading image:", error);
+      };
     }
   };
-  // console.log(row);
 
   return (
     <Fragment>
