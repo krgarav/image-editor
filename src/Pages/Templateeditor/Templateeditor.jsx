@@ -156,9 +156,8 @@ function Templateeditor() {
         unit: "mm",
         format: [pageWidth, pageHeight],
       });
-
       // Add the image to the PDF
-      pdf.addImage(imgDataUrl, "JPEG", 10, 10, imgWidth, imgHeight);
+      pdf.addImage(imgDataUrl, "JPEG", 10, 10, pageHeight, pageHeight);
 
       // Generate PDF as a Blob
       const pdfBlob = pdf.output("blob");
