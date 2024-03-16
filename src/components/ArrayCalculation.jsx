@@ -7,8 +7,8 @@
   // Push image URLs into the 2D array according to index numbers
   imgObj.forEach((item,ind) => {
     const { index, imgUrl } = item;
-    const rowIndex = Math.floor(ind / totalColumns);
-    const columnIndex = Math.floor(ind % totalColumns);
+    const rowIndex = Math.floor(index / totalColumns);
+    const columnIndex = Math.floor(index % totalColumns);
     
     twoDimenArr[rowIndex][columnIndex] = imgUrl;
   });
