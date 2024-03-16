@@ -5,6 +5,7 @@ import Cropper from "react-easy-crop";
 import ImageUiSelector from "./components/imageUiSelector";
 import ImageCropperEditor from "./components/imageCropperEditor";
 import { Route, Routes } from "react-router";
+import ImageMerger from "./components/Imagemerger";
 
 function App() {
   // const [imageUrl, setImageUrl] = useState("");
@@ -150,10 +151,11 @@ function App() {
   //     {/* {isCroppedImageReady && <img src={croppedImage} alt="Cropped Image" />} */}
   //   </div>
   return (
-    <Routes>
-      <Route path="*" element={<ImageUiSelector />}></Route>
-      <Route path="/editor" element={<ImageCropperEditor />}></Route>
-    </Routes>
+    // <Routes>
+    //   <Route path="*" element={<ImageUiSelector />}></Route>
+    //   <Route path="/editor" element={<ImageCropperEditor />}></Route>
+    // </Routes>
+    <><ImageMerger></ImageMerger></>
   );
 }
 
