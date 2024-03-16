@@ -188,6 +188,7 @@ function Homepage() {
                 <div
                   className="badge bg-danger m-2 p-2 text-white fw-bolder"
                   onClick={generateTemplateHandler}
+                  style={{cursor:"pointer"}}
                 >
                   Generate{" "}
                 </div>

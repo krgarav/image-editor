@@ -21,6 +21,10 @@ function Templateeditor() {
       navigate("/Image Merger", { replace: true });
     }
   }, []);
+  let styles =
+  totalRow > 1
+    ? { minHeight: "595px", maxWidth: "842px", minWidth: "595px" }
+    : { maxWidth: "842px", minWidth: "595px", minHeight: "300px" };
 
   let newArray = [];
 
@@ -52,6 +56,7 @@ function Templateeditor() {
         key={index}
         className={`cols  d-flex justify-content-center align-items-center fw-bolder ${tempcss.columnDiv}`}
         style={{
+          cursor:"crosshair",
           border: findItemIndex == -1 ? border : "none",
           backgroundImage: bgUrl,
           backgroundSize:
@@ -199,6 +204,7 @@ function Templateeditor() {
             <div
               className={`row row-cols-${perLineCols}  ${tempcss.rowStyle} d-flex`}
               id="collage"
+              style={styles}
             >
               {newArray}
             </div>
