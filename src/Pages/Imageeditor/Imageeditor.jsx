@@ -33,7 +33,7 @@ const imageEditor = () => {
     };
     reader.readAsDataURL(files[0]);
   };
-  console.log(image);
+ 
   // Function to handle scale change
   const handleScaleChange = (event) => {
     setScale(parseFloat(event.target.value));
@@ -50,7 +50,9 @@ const imageEditor = () => {
       imgctx.addToEditedImage(
         location.state.index,
         cropperRef.current?.cropper.getCroppedCanvas().toDataURL()
+        
       );
+      
       navigate("/temeditor");
     }
   };

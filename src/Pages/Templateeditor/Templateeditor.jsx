@@ -7,14 +7,15 @@ import { toast } from "react-toastify";
 import DrawerAppBar from "../../components/Appbar/Appbar";
 import uploadsvg from "/upload-svgrepo-com.png";
 import jsPDF from "jspdf";
+import ArrayCalculation from "../../components/ArrayCalculation";
+import ImageMerger from "../../components/Imagemerger";
 
 function Templateeditor(props) {
   const navigate = useNavigate();
   const imgctx = useContext(imageContext);
-
   const totalColumns = imgctx.rowColState.totalColumns;
   const perLineCols = imgctx.rowColState.cols;
-  const row = totalColumns / perLineCols;
+  const totalRow = totalColumns / perLineCols;
 
   useEffect(() => {
     if (!totalColumns || !perLineCols) {
@@ -25,7 +26,6 @@ function Templateeditor(props) {
   let newArray = [];
 
   const getCroppImageHandler = (index) => {
-    console.log(index);
     navigate("/imgeditor", { state: { index } });
   };
   const border = "1px solid grey";
@@ -83,43 +83,72 @@ function Templateeditor(props) {
     );
   }
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (imgctx.editedImage.length < totalColumns) {
       toast.error(
         "please upload image to each column else choose another template"
       );
       return;
     } else {
-      const collageElement = document.querySelector("#collage");
-      html2canvas(collageElement).then(async (canvas) => {
-        // Convert canvas to data URL representing the image
-        const imgDataUrl = canvas.toDataURL("image/jpeg", 0.9); // JPEG format with quality
+     
+      const twoDimImgUrlArr = ArrayCalculation(
+        imgctx.editedImage,
+        perLineCols,
+        totalRow
+      );
+  
+      const imgDataUrl = await ImageMerger(twoDimImgUrlArr);
+      const response = await fetch(imgDataUrl);
+      const blob = await response.blob();
+      const opts = {
+        types: [
+          {
+            description: "JPEG Image",
+            accept: { "image/jpeg": [".jpg", ".jpeg"] },
+          },
+        ],
+        suggestedName: "merged image",
+      };
 
-        // Convert data URL to Blob
-        const response = await fetch(imgDataUrl);
+      // Request permission to save file
+      const fileHandle = await window.showSaveFilePicker(opts);
 
-        const blob = await response.blob();
+      // Create a new file writer
+      const writable = await fileHandle.createWritable();
+      await writable.write(blob, { type: "image/jpeg" });
+      await writable.close();
 
-        const opts = {
-          types: [
-            {
-              description: "JPEG Image",
-              accept: { "image/jpeg": [".jpg", ".jpeg"] },
-            },
-          ],
-          suggestedName: "merged image",
-        };
+      // const collageElement = document.querySelector("#collage");
+      // html2canvas(collageElement).then(async (canvas) => {
+      //   // Convert canvas to data URL representing the image
+      //   const imgDataUrl = canvas.toDataURL("image/jpeg", 0.9); // JPEG format with quality
 
-        // Request permission to save file
-        const fileHandle = await window.showSaveFilePicker(opts);
+      //   // Convert data URL to Blob
+      //   const response = await fetch(imgDataUrl);
 
-        // Create a new file writer
-        const writable = await fileHandle.createWritable();
-        await writable.write(blob, { type: "image/jpeg" });
-        await writable.close();
-      });
+      //   const blob = await response.blob();
+
+      //   const opts = {
+      //     types: [
+      //       {
+      //         description: "JPEG Image",
+      //         accept: { "image/jpeg": [".jpg", ".jpeg"] },
+      //       },
+      //     ],
+      //     suggestedName: "merged image",
+      //   };
+
+      //   // Request permission to save file
+      //   const fileHandle = await window.showSaveFilePicker(opts);
+
+      //   // Create a new file writer
+      //   const writable = await fileHandle.createWritable();
+      //   await writable.write(blob, { type: "image/jpeg" });
+      //   await writable.close();
+      // });
     }
   };
+
   const handleDownloadPdf = () => {
     if (imgctx.editedImage.length < totalColumns) {
       toast.error(
@@ -153,6 +182,7 @@ function Templateeditor(props) {
       });
     }
   };
+  // console.log(row);
 
   return (
     <Fragment>

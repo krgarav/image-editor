@@ -42,8 +42,8 @@ const GridCrop = () => {
 
         // Adjust canvas width and height according to image dimensions
         const aspectRatio = img.width / img.height;
-        const maxWidth = 600; // Maximum width for the canvas
-        const maxHeight = 600; // Maximum height for the canvas
+        const maxWidth = 1920; // Maximum width for the canvas
+        const maxHeight = 1080; // Maximum height for the canvas
 
         if (img.width > maxWidth || img.height > maxHeight) {
           if (aspectRatio > 1) {

@@ -11,7 +11,6 @@ function Homepage() {
   const rowRef = useRef();
   const imgctx = useContext(imageContext);
   const sendRowandColDataHandler = (rowData) => {
-    console.log(rowData);
     imgctx.setRowColState({ rowData });
     navigate("/temeditor");
   };
