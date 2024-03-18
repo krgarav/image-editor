@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import imageContext from "../../store/Image-context";
 import tempcss from "./templateeditor.module.css";
@@ -27,10 +27,6 @@ function Templateeditor() {
       : { maxWidth: "842px", minWidth: "595px", minHeight: "300px" };
 
   let newArray = [];
-
-  const getCroppImageHandler = (index) => {
-    navigate("/imgeditor", { state: { index } });
-  };
   const border = "1px solid grey";
   const fixedArr = new Array(totalColumns);
   imgctx.editedImage.forEach((item) => {
@@ -39,6 +35,21 @@ function Templateeditor() {
 
     fixedArr[index] = url;
   });
+
+  const handleFileChange = (e, index) => {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      imgctx.addToEditedImage(index, reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+  };
 
   for (let index = 0; index < totalColumns; index++) {
     const findItemIndex = imgctx.editedImage.findIndex(
@@ -56,7 +67,6 @@ function Templateeditor() {
         key={index}
         className={`cols  d-flex justify-content-center align-items-center fw-bolder ${tempcss.columnDiv}`}
         style={{
-          cursor: "crosshair",
           border: findItemIndex == -1 ? border : "none",
           backgroundImage: bgUrl,
           backgroundSize:
@@ -64,12 +74,25 @@ function Templateeditor() {
           backgroundPosition: "center" /* Center the background image */,
           backgroundRepeat: "no-repeat" /* Prevent the image from repeating */,
         }}
-        onClick={() => getCroppImageHandler(index)}
       >
         <div className={tempcss.uploadIcon}>
           {findItemIndex == -1 ? (
             <div>
-              <img src={uploadsvg} width="30px" height="30px"></img>upload
+              <label
+                htmlFor={`file-upload-${index}`}
+                className={tempcss.label_container}
+              >
+                <img src={uploadsvg} width="30px" height="30px"></img>
+                <span className={tempcss.upload_content}>
+                  Click Here To Upload A Image
+                </span>
+              </label>
+              <input
+                id={`file-upload-${index}`}
+                type="file"
+                onChange={(e) => handleFileChange(e, index)}
+                style={{ display: "none" }}
+              />
               <h5></h5>
             </div>
           ) : (
@@ -112,7 +135,7 @@ function Templateeditor() {
         ],
         suggestedName: "merged image",
       };
-      // const directoryHandle = await window.showDirectoryPicker(opts);
+
       const fileHandle = await window.showSaveFilePicker(opts);
       const fileName = fileHandle.name;
       const writable = await fileHandle.createWritable();
@@ -144,16 +167,16 @@ function Templateeditor() {
       const pdf = new jsPDF({
         unit: "mm",
       });
-      // Create a new jsPDF instance
 
       // Wait for the image to load
       img.onload = async () => {
         // Calculate the dimensions to fit the image on the page
         const imgWidth = pdf.internal.pageSize.getWidth();
         const imgHeight = img.height * (imgWidth / img.width);
-
+        pdf.internal.pageSize.height = imgHeight + 10;
+        pdf.internal.pageSize.width = imgWidth + 10;
         // Add the image to the PDF
-        pdf.addImage(img, "JPEG", 0, 0, imgWidth, imgHeight);
+        pdf.addImage(img, "JPEG", 10, 10, imgWidth, imgHeight);
 
         // Generate the PDF as a Blob
         const pdfBlob = pdf.output("blob");

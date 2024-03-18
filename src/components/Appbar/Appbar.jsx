@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { NavLink } from "react-router-dom";
 const drawerWidth = 240;
-const navItems = ["Image Cropper", "Image Merger"];
+const navItems = ["Image Merger"];
 
 function DrawerAppBar(props) {
   const { window } = props;
@@ -30,7 +30,7 @@ function DrawerAppBar(props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+        IMAGE MERGER
       </Typography>
       <Divider />
       <List>
@@ -72,7 +72,7 @@ function DrawerAppBar(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            IMAGE EDITOR
+            IMAGE MERGER
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (

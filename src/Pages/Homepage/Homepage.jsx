@@ -47,16 +47,16 @@ function Homepage() {
           className={`container border ${tempcss.columnContainer} mt-1 shadow`}
           style={{ height: "auto" }}
         >
-          <div className="row ">
+          {/* <div className="row ">
             <div className="col-12 col-sm-8 text-center border  fw-bolder py-2 bg-info text-white">
               Select template from predefined templates
             </div>
             <div className="col text-center  fw-bolder py-2 mx-5 ">
               
             </div>
-          </div>
+          </div> */}
           <div className="row text-center">
-            <div className="col-12 col-md-8 m-2">
+            {/* <div className="col-12 col-md-8 m-2">
               <div className="col m-5 text-center">
                 <div
                   style={{
@@ -161,11 +161,11 @@ function Homepage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="col   m-2 d-flex  align-items-center flex-column">
-              <div className="badge rounded-circle bg-info m-2">
+              {/* <div className="badge rounded-circle bg-info m-2">
                 <h3>OR</h3>
-              </div>
+              </div> */}
               <div className="col-8 text-center border  fw-bolder p-2 m-2">
                 create new template
               </div>

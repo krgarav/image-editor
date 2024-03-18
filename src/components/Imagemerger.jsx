@@ -1,3 +1,5 @@
+
+
 function ImageMerger(imageArray) {
   return new Promise((resolve, reject) => {
     const canvas = document.createElement("canvas");
@@ -26,7 +28,13 @@ function ImageMerger(imageArray) {
 
         // Draw the image when it's loaded
         imageLoadPromise.then(async () => {
-          ctx.drawImage(img, colIndex * 2000, rowIndex * 2000, 2000, 2000);
+          ctx.drawImage(
+            img,
+            colIndex * 2000,
+            rowIndex * 2000,
+            2000,
+            2000
+          );
         });
       });
     });
