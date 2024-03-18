@@ -173,10 +173,10 @@ function Templateeditor() {
         // Calculate the dimensions to fit the image on the page
         const imgWidth = pdf.internal.pageSize.getWidth();
         const imgHeight = img.height * (imgWidth / img.width);
-        pdf.internal.pageSize.height = imgHeight + 10;
-        pdf.internal.pageSize.width = imgWidth + 10;
+        pdf.internal.pageSize.height = imgHeight;
+        pdf.internal.pageSize.width = imgWidth;
         // Add the image to the PDF
-        pdf.addImage(img, "JPEG", 10, 10, imgWidth, imgHeight);
+        pdf.addImage(img, "JPEG", 0,0 ,imgWidth, imgHeight);
 
         // Generate the PDF as a Blob
         const pdfBlob = pdf.output("blob");
