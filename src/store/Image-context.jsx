@@ -9,7 +9,9 @@ const imageContext = React.createContext({
   addToEditedImage: () => {},
   addToMergedImages: () => {},
   addToCroppedImages: ()=>{},
-  removeFromCroppedImage:()=>{}
+  removeFromCroppedImage:()=>{},
+  removeFormEditedImage:()=>{},
+  resetEditedImage:()=>{}
 });
 
 export default imageContext;

@@ -15,7 +15,6 @@ function Imageprovider(props) {
       index,
       imgUrl,
     };
-    // console.log(obj);
     const updatedEditedImage = [...imgState.editedImage];
     updatedEditedImage.push(obj);
     setImgState((prevImgState) => {
@@ -51,6 +50,20 @@ function Imageprovider(props) {
       return { ...item, croppedImages: filteredCroppedImage };
     });
   };
+  const removeFormEditedImageHandler = (index) => {
+    const copiedState = [...imgState.editedImage];
+    const flt = copiedState.filter((item) => {
+      return item.index !== index;
+    });
+    setImgState((item) => {
+      return { ...item, editedImage: flt };
+    });
+  };
+  const resetEditedImageHandler = () => {
+    setImgState((item) => {
+      return { ...item, editedImage: [] };
+    });
+  };
   const imgContext = {
     editedImage: imgState.editedImage,
     mergedImages: imgState.mergedImages,
@@ -61,6 +74,8 @@ function Imageprovider(props) {
     addToCroppedImages: addToCroppedImagesHandler,
     setRowColState: setRowColStateHandler,
     removeFromCroppedImage: removeFromCroppedImageHandler,
+    removeFormEditedImage: removeFormEditedImageHandler,
+    resetEditedImage: resetEditedImageHandler,
   };
   return (
     <Imagecontext.Provider value={imgContext}>

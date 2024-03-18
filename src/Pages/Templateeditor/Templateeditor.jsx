@@ -8,6 +8,7 @@ import uploadsvg from "/upload-svgrepo-com.png";
 import jsPDF from "jspdf";
 import ArrayCalculation from "../../components/ArrayCalculation";
 import ImageMerger from "../../components/Imagemerger";
+import { MdDelete } from "react-icons/md";
 
 function Templateeditor() {
   const navigate = useNavigate();
@@ -20,7 +21,10 @@ function Templateeditor() {
     if (!totalColumns || !perLineCols) {
       navigate("/Image Merger", { replace: true });
     }
+    imgctx.resetEditedImage();
   }, []);
+
+  const [hovered, setHovered] = useState(false);
   let styles =
     totalRow > 1
       ? { minHeight: "595px", maxWidth: "842px", minWidth: "595px" }
@@ -51,6 +55,16 @@ function Templateeditor() {
     reader.readAsDataURL(files[0]);
   };
 
+  const handleDelete = (index) => {
+    imgctx.removeFormEditedImage(index);
+  };
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
   for (let index = 0; index < totalColumns; index++) {
     const findItemIndex = imgctx.editedImage.findIndex(
       (current) => current.index == index
@@ -66,6 +80,8 @@ function Templateeditor() {
       <div
         key={index}
         className={`cols  d-flex justify-content-center align-items-center fw-bolder ${tempcss.columnDiv}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         style={{
           border: findItemIndex == -1 ? border : "none",
           backgroundImage: bgUrl,
@@ -102,6 +118,13 @@ function Templateeditor() {
                 width="30px"
                 height="30px"
               ></div>
+              {hovered && <div className={tempcss["div-dimmer"]}></div>}
+              {hovered && (
+                <MdDelete
+                  className={tempcss["delete-icon"]}
+                  onClick={() => handleDelete(index)}
+                />
+              )}
               <h5></h5>
             </div>
           )}
@@ -109,7 +132,6 @@ function Templateeditor() {
       </div>
     );
   }
-
   const handleDownload = async () => {
     if (imgctx.editedImage.length < totalColumns) {
       toast.error(
@@ -176,7 +198,7 @@ function Templateeditor() {
         pdf.internal.pageSize.height = imgHeight;
         pdf.internal.pageSize.width = imgWidth;
         // Add the image to the PDF
-        pdf.addImage(img, "JPEG", 0,0 ,imgWidth, imgHeight);
+        pdf.addImage(img, "JPEG", 0, 0, imgWidth, imgHeight);
 
         // Generate the PDF as a Blob
         const pdfBlob = pdf.output("blob");
