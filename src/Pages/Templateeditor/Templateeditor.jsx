@@ -22,9 +22,9 @@ function Templateeditor() {
     }
   }, []);
   let styles =
-  totalRow > 1
-    ? { minHeight: "595px", maxWidth: "842px", minWidth: "595px" }
-    : { maxWidth: "842px", minWidth: "595px", minHeight: "300px" };
+    totalRow > 1
+      ? { minHeight: "595px", maxWidth: "842px", minWidth: "595px" }
+      : { maxWidth: "842px", minWidth: "595px", minHeight: "300px" };
 
   let newArray = [];
 
@@ -56,7 +56,7 @@ function Templateeditor() {
         key={index}
         className={`cols  d-flex justify-content-center align-items-center fw-bolder ${tempcss.columnDiv}`}
         style={{
-          cursor:"crosshair",
+          cursor: "crosshair",
           border: findItemIndex == -1 ? border : "none",
           backgroundImage: bgUrl,
           backgroundSize:
@@ -112,10 +112,13 @@ function Templateeditor() {
         ],
         suggestedName: "merged image",
       };
+      // const directoryHandle = await window.showDirectoryPicker(opts);
       const fileHandle = await window.showSaveFilePicker(opts);
+      const fileName = fileHandle.name;
       const writable = await fileHandle.createWritable();
       await writable.write(blob, { type: "image/jpeg" });
       await writable.close();
+      alert(`${fileName}  have been downloaded`);
     }
   };
 
@@ -169,7 +172,7 @@ function Templateeditor() {
         try {
           // Prompt the user to select a location to save the file
           const fileHandle = await window.showSaveFilePicker(opts);
-
+          const fileName = fileHandle.name;
           // Create a writable stream to the file
           const writable = await fileHandle.createWritable();
 
@@ -178,6 +181,7 @@ function Templateeditor() {
 
           // Close the file
           await writable.close();
+          alert(`${fileName}  have been downloaded`);
         } catch (error) {
           console.error("Error saving PDF:", error);
         }

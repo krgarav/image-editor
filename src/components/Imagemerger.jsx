@@ -5,8 +5,8 @@ function ImageMerger(imageArray) {
     const imagePromises = [];
 
     // Calculate canvas size based on total width and height of images
-    const canvasWidth = imageArray[0].length * 1000;
-    const canvasHeight = imageArray.length * 1000;
+    const canvasWidth = imageArray[0].length * 2000;
+    const canvasHeight = imageArray.length * 2000;
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 
@@ -25,8 +25,8 @@ function ImageMerger(imageArray) {
         imagePromises.push(imageLoadPromise);
 
         // Draw the image when it's loaded
-        imageLoadPromise.then(() => {
-          ctx.drawImage(img, colIndex * 1000, rowIndex * 1000, 1000, 1000);
+        imageLoadPromise.then(async () => {
+          ctx.drawImage(img, colIndex * 2000, rowIndex * 2000, 2000, 2000);
         });
       });
     });
