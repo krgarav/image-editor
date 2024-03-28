@@ -17,7 +17,6 @@ function Homepage() {
   const generateTemplateHandler = () => {
     const cols = colRef.current.value;
     const row = rowRef.current.value;
-    console.log(); //{row: 1, cols: 3, totalColumns: 9}
     if (cols > 6) {
       toast.error("columns per line field should be 6 or less  ");
       return;
